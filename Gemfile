@@ -54,3 +54,5 @@ group :test do
 	gem 'shoulda-matchers'
 end
 
+gem 'slim-rails'
+
