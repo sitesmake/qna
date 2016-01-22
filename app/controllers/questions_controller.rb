@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :load_question, only: [:show, :edit]
+  before_action :load_question, only: [:show, :edit, :update]
 
   def show
   end
@@ -12,13 +12,21 @@ class QuestionsController < ApplicationController
     @question = Question.create(question_params)
 
     if @question.save
-      redirect_to @question
+      redirect_to @question, notice: 'Your Question was successfully created'
     else
       render :new
     end
   end
 
   def edit
+  end
+
+  def update
+    if @question.update(question_params)
+      redirect_to @question, notice: 'Your Question was successfully updated'
+    else
+      render :edit
+    end
   end
 
   private
