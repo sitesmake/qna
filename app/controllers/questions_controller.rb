@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :load_question, only: [:show]
+  before_action :load_question, only: [:show, :edit]
 
   def show
   end
@@ -16,6 +16,9 @@ class QuestionsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
   end
 
   private
