@@ -52,4 +52,52 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to render_template :edit
     end
   end
+
+  describe 'PATCH #update' do
+    let!(:answer) { create(:answer) }
+
+    context 'with valid attributes' do
+      it 'assigns the requested answer to @answer' do
+        patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        patch :update, question_id: question, id: answer, answer: { body: 'new body 2' }
+        answer.reload
+        expect(answer.body).to eq 'new body 2'
+      end
+
+      it 'redirects to the updated answer question' do
+        patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
+        expect(response).to redirect_to answer.question
+      end
+    end
+
+    context 'with invalid attributes' do
+      before { patch :update, question_id: question, id: answer, answer: attributes_for(:answer, body: nil) }
+
+      it 'does not change answer attributes' do
+        answer.reload
+        expect(answer.body).to eq 'Answer text'
+      end
+
+      it 'rerenders edit view' do
+        expect(response).to render_template :edit
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:answer) { create(:answer) }
+
+    it 'deletes answer' do
+      expect { delete :destroy, question_id: answer.question, id: answer }.to change(Answer, :count).by(-1)
+    end
+
+    it 'redirect to question view' do
+      delete :destroy, question_id: answer.question, id: answer
+      expect(response).to redirect_to answer.question
+    end
+  end
 end

@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
-  before_action :load_answer, only: [:edit]
+  before_action :load_answer, only: [:edit, :update, :destroy]
+
   def new
     @answer = Answer.new(question_id: params[:question_id])
   end
@@ -16,6 +17,19 @@ class AnswersController < ApplicationController
   end
 
   def edit
+  end
+
+  def update
+    if @answer.update(answer_params)
+      redirect_to @answer.question, notice: 'Your Answer was successfully updated'
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @answer.destroy
+    redirect_to @answer.question
   end
 
   private
