@@ -19,7 +19,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves the new question' do
-        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(Answer, :count).by(1)
+        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
       end
 
       it 'redirects to question view' do
@@ -30,7 +30,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       it 'does not save answer' do
-        expect { post :create, question_id: question, answer: attributes_for(:answer, body: nil) }.not_to change(Answer, :count)
+        expect { post :create, question_id: question, answer: attributes_for(:answer, body: nil) }.not_to change(question.answers, :count)
       end
 
       it 'rerenders new view' do
@@ -89,15 +89,15 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { create(:answer) }
+    let!(:answer) { create(:answer, question: question) }
 
     it 'deletes answer' do
-      expect { delete :destroy, question_id: answer.question, id: answer }.to change(Answer, :count).by(-1)
+      expect { delete :destroy, question_id: question, id: answer }.to change(question.answers, :count).by(-1)
     end
 
     it 'redirect to question view' do
-      delete :destroy, question_id: answer.question, id: answer
-      expect(response).to redirect_to answer.question
+      delete :destroy, question_id: question, id: answer
+      expect(response).to redirect_to question
     end
   end
 end
