@@ -70,7 +70,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirects to the updated answer question' do
         patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
-        expect(response).to redirect_to answer.question
+        expect(response).to redirect_to question
       end
     end
 
