@@ -30,7 +30,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       it 'does not save answer' do
-        expect { post :create, question_id: question, answer: attributes_for(:answer, body: nil) }.not_to change(question.answers, :count)
+        expect { post :create, question_id: question, answer: attributes_for(:answer, body: nil) }.not_to change(Answer, :count)
       end
 
       it 'rerenders new view' do
