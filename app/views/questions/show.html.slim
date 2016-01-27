@@ -1,0 +1,7 @@
+h1 = @question.title
+p = @question.body
+
+- @answers.each do |answer|
+  p = answer.body
+
+= link_to 'Answer this question', new_question_answer_path(@question)

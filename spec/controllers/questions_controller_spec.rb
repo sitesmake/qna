@@ -13,6 +13,14 @@ RSpec.describe QuestionsController, type: :controller do
     it 'renders show view' do
       expect(response).to render_template :show
     end
+
+    it 'assigns the requested question answers to @answers' do
+      answer1 = create(:answer, question: question)
+      answer2 = create(:answer)
+      answer3 = create(:answer, question: question)
+
+      expect(assigns(:answers)).to eq [answer1, answer3]
+    end
   end
 
   describe 'GET #new' do
