@@ -2,14 +2,18 @@ require 'rails_helper'
 
 feature 'User sign in', %q{
   In order to be able to make registered-user actions
-  As an user
+  As an guest
   I want to be able to sign in
 } do
 
   scenario 'Registered user try to sign in' do
     User.create!(email: 'user@test.com', password: '12345678')
 
-    visit new_user_session_path
+    visit root_path
+    expect(page).to have_link 'Sign in'
+    click_on 'Sign in'
+    #visit new_user_session_path
+
     fill_in 'Email', with: 'user@test.com'
     fill_in 'Password', with: '12345678'
     click_on 'Log in'
