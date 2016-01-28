@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-feature 'User can view questions', %q{
+feature 'Guest can view questions', %q{
   In order to select question
-  As an user
+  As an guest
   I want to view list of questions
 } do
 
-  scenario 'User views the questions' do
+  scenario 'Guest views the questions' do
     question1 = create(:question, title: 'Question 1')
     question2 = create(:question, title: 'Question 2')
 

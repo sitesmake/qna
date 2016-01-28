@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-feature 'User can view questions and answers', %q{
+feature 'Guest can view questions and answers', %q{
   In order to view question and answers
-  As an user
+  As an guest
   I want to view question and list of answers to this question
 } do
 
-  scenario 'User view the question and answers to that question' do
+  scenario 'Guest view the question and answers to that question' do
     question = create(:question)
     answer1 = create(:answer, body: 'answer 1', question: question)
     answer2 = create(:answer, body: 'answer 2')
