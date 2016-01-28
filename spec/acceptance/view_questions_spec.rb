@@ -7,14 +7,12 @@ feature 'User can view questions', %q{
 } do
 
   scenario 'User views the questions' do
+    question1 = create(:question, title: 'Question 1')
+    question2 = create(:question, title: 'Question 2')
 
     visit questions_path
 
-    click_on 'Ask question'
-    fill_in 'Title', with: 'question title'
-    fill_in 'Body', with: 'text of the question'
-    click_on 'Ask question'
-
-    expect(page).to have_content 'Your Question was successfully created'
+    expect(page).to have_content 'Question 1'
+    expect(page).to have_content 'Question 2'
   end
 end

@@ -7,6 +7,9 @@ feature 'User can create question', %q{
 } do
 
   scenario 'User create the question' do
+    user = create(:user)
+
+    sign_in(user)
 
     visit questions_path
 

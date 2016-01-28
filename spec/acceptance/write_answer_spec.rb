@@ -7,7 +7,10 @@ feature 'User can write answer to question', %q{
 } do
 
   scenario 'User create answer' do
+    user = create(:user)
     question = create(:question)
+
+    sign_in(user)
 
     visit question_path(question)
     click_on 'Answer this question'

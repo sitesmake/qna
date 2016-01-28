@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_question
   before_action :load_answer, only: [:edit, :update, :destroy]
 

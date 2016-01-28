@@ -8,8 +8,8 @@ feature 'User registration', %q{
 
   scenario 'Guest can register' do
     visit root_path
-
     expect(page).to have_link('Register')
+
     click_link('Register')
     expect(current_path).to eq new_user_registration_path
 
