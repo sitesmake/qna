@@ -24,4 +24,13 @@ feature 'User can write answer to question', %q{
     expect(page).to have_content 'My answer.'
 
   end
+
+  scenario 'Guest can not create answer' do
+    question = create(:question)
+    visit question_path(question)
+    click_on 'Answer this question'
+
+    expect(page).not_to have_link('Post answer')
+    expect(page).to have_content('You need to sign in or sign up before continuing')
+  end
 end

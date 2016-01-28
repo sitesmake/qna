@@ -20,4 +20,14 @@ feature 'User can create question', %q{
 
     expect(page).to have_content 'Your Question was successfully created'
   end
+
+  scenario 'Guest can not create the question' do
+    visit questions_path
+
+    click_on 'Ask question'
+
+    expect(page).not_to have_link('Ask question')
+    expect(page).to have_content('You need to sign in or sign up before continuing')
+
+  end
 end
