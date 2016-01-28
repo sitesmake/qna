@@ -6,9 +6,9 @@ feature 'User can create question', %q{
   I want to create question
 } do
 
-  scenario 'User create the question' do
-    user = create(:user)
+  given(:user) { create(:user) }
 
+  scenario 'User create the question' do
     sign_in(user)
 
     visit questions_path
@@ -22,8 +22,6 @@ feature 'User can create question', %q{
   end
 
   scenario 'User can not create the question with blank title or body' do
-    user = create(:user)
-
     sign_in(user)
 
     visit questions_path

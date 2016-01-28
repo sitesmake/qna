@@ -6,10 +6,10 @@ feature 'User can write answer to question', %q{
   I want to create answer
 } do
 
-  scenario 'User create answer' do
-    user = create(:user)
-    question = create(:question)
+  given(:user) { create(:user) }
+  given(:question) { create(:question) }
 
+  scenario 'User create answer' do
     sign_in(user)
 
     visit question_path(question)
@@ -26,9 +26,6 @@ feature 'User can write answer to question', %q{
   end
 
   scenario 'User can not create answer with blank field' do
-    user = create(:user)
-    question = create(:question)
-
     sign_in(user)
 
     visit question_path(question)
@@ -43,7 +40,6 @@ feature 'User can write answer to question', %q{
   end
 
   scenario 'Guest can not create answer' do
-    question = create(:question)
     visit question_path(question)
     click_on 'Answer this question'
 
