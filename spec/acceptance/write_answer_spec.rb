@@ -25,6 +25,23 @@ feature 'User can write answer to question', %q{
 
   end
 
+  scenario 'User can not create answer with blank field' do
+    user = create(:user)
+    question = create(:question)
+
+    sign_in(user)
+
+    visit question_path(question)
+    click_on 'Answer this question'
+
+    expect(page).to have_current_path(new_question_answer_path(question))
+    fill_in 'answer_body', with: ''
+    click_on 'Post answer'
+
+    expect(page).not_to have_content 'Your Answer was successfully created'
+    expect(page).to have_content "Body can't be blank"
+  end
+
   scenario 'Guest can not create answer' do
     question = create(:question)
     visit question_path(question)

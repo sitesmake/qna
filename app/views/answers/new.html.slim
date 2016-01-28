@@ -1,7 +1,11 @@
 = form_for [@question, @answer] do |f|
-  div.field
+  - if @answer.errors.any?
+    ul
+      =@answer.errors.full_messages.each do |message|
+        li = message
+  .field
     = f.label :body, 'Answer'
     br
     = f.text_area :body
-  div.actions
+  .actions
     = f.submit "Post answer"
