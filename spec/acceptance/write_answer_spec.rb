@@ -13,9 +13,7 @@ feature 'User can write answer to question', %q{
     sign_in(user)
 
     visit question_path(question)
-    click_on 'Answer this question'
 
-    expect(page).to have_current_path(new_question_answer_path(question))
     fill_in 'answer_body', with: 'My answer.'
     click_on 'Post answer'
 
@@ -29,9 +27,7 @@ feature 'User can write answer to question', %q{
     sign_in(user)
 
     visit question_path(question)
-    click_on 'Answer this question'
 
-    expect(page).to have_current_path(new_question_answer_path(question))
     fill_in 'answer_body', with: ''
     click_on 'Post answer'
 
@@ -41,9 +37,7 @@ feature 'User can write answer to question', %q{
 
   scenario 'Guest can not create answer' do
     visit question_path(question)
-    click_on 'Answer this question'
 
     expect(page).not_to have_link('Post answer')
-    expect(page).to have_content('You need to sign in or sign up before continuing')
   end
 end

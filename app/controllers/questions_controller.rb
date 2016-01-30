@@ -8,6 +8,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answer = @question.answers.build(user: current_user) if current_user
     @answers = @question.answers
   end
 
