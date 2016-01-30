@@ -33,7 +33,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'assigns a current_user to @question' do
-      expect(assigns(:question).user_id).to eq(@user.id)
+      expect(assigns(:question).user).to eq(@user)
     end
 
     it 'renders new view' do
@@ -65,10 +65,17 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :new
       end
     end
+
+    it 'assigns a current_user to @question' do
+      post :create, question: attributes_for(:question)
+      expect(assigns(:question).user).to eq(@user)
+    end
   end
 
   describe 'GET #edit' do
     sign_in_user
+
+    let(:question) { create(:question, user: @user) }
 
     before { get :edit, id: question }
 
@@ -78,6 +85,15 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'renders edit view' do
       expect(response).to render_template :edit
+    end
+
+    it 'redirects to question with incorrect user' do
+      question.user = create(:user)
+      question.save!
+
+      get :edit, id: question
+
+      expect(response).to redirect_to question_path
     end
   end
 
@@ -119,7 +135,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'with icorrect user' do
+    context 'with incorrect user' do
       before do
         question.user = create(:user)
         question.save!
@@ -143,17 +159,15 @@ RSpec.describe QuestionsController, type: :controller do
 
     let(:question) { create(:question, user: @user) }
 
-    context 'with correct user' do
-      before { question }
+    it 'deletes question' do
+      question
+      expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+    end
 
-      it 'deletes question' do
-        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
-      end
-
-      it 'redirect to index view' do
-        delete :destroy, id: question
-        expect(response).to redirect_to questions_path
-      end
+    it 'redirect to index view' do
+      question
+      delete :destroy, id: question
+      expect(response).to redirect_to questions_path
     end
 
     context 'with incorrect user' do
