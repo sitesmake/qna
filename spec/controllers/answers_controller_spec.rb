@@ -30,11 +30,6 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question, answer: attributes_for(:answer)
         expect(response).to redirect_to question_path(question)
       end
-
-      it 'creates answer with logged-in user' do
-        post :create, question_id: question, answer: attributes_for(:answer)
-        expect(assigns(:answer).user).to eq(@user)
-      end
     end
 
     context 'with invalid attributes' do
@@ -47,12 +42,18 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to redirect_to question_path(question)
       end
     end
+
+    it 'creates answer with logged-in user' do
+      post :create, question_id: question, answer: attributes_for(:answer)
+      expect(assigns(:answer).user).to eq(@user)
+    end
   end
 
   describe 'GET #edit' do
     sign_in_user
 
-    let(:answer) { create(:answer) }
+    let(:answer) { create(:answer, user: @user) }
+
     before { get :edit, question_id: question, id: answer }
 
     it 'assigns the requested answer to @answer' do
@@ -62,12 +63,20 @@ RSpec.describe AnswersController, type: :controller do
     it 'renders edit view' do
       expect(response).to render_template :edit
     end
+
+    it 'does not allow to edit for other user' do
+      answer = create(:answer, user: create(:user))
+
+      get :edit, question_id: question, id: answer
+
+      expect(response).to redirect_to question
+    end
   end
 
   describe 'PATCH #update' do
     sign_in_user
 
-    let!(:answer) { create(:answer) }
+    let!(:answer) { create(:answer, user: @user) }
 
     context 'with valid attributes' do
       it 'assigns the requested answer to @answer' do
@@ -99,12 +108,20 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :edit
       end
     end
+
+    it 'does not allow to update for other user' do
+      answer = create(:answer, user: create(:user))
+
+      patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
+
+      expect(response).to redirect_to question
+    end
   end
 
   describe 'DELETE #destroy' do
     sign_in_user
 
-    let!(:answer) { create(:answer, question: question) }
+    let!(:answer) { create(:answer, question: question, user: @user) }
 
     it 'deletes answer' do
       expect { delete :destroy, question_id: question, id: answer }.to change(question.answers, :count).by(-1)
@@ -112,6 +129,14 @@ RSpec.describe AnswersController, type: :controller do
 
     it 'redirect to question view' do
       delete :destroy, question_id: question, id: answer
+      expect(response).to redirect_to question
+    end
+
+    it 'does not allow to destroy for other user' do
+      answer = create(:answer, user: create(:user))
+
+      delete :destroy, question_id: question, id: answer
+
       expect(response).to redirect_to question
     end
   end

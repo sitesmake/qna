@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question
   before_action :load_answer, only: [:edit, :update, :destroy]
+  before_action :check_user, only: [:edit, :update, :destroy]
 
   #def new
   #  @answer = @question.answers.new
@@ -37,6 +38,12 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def check_user
+    if @answer.user != current_user
+      redirect_to @question, alert: "Only author allowed to modify answer"
+    end
+  end
 
   def set_question
     @question = Question.find(params[:question_id])
