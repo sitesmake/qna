@@ -122,15 +122,19 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      before { patch :update, id: question, question: { title: 'new title 2', body: nil } }
+      before {}
 
       it 'does not change question attributes' do
+        old_title = question.title
+        old_body = question.body
+        patch :update, id: question, question: { title: 'new title 2', body: nil }
         question.reload
-        expect(question.title).to eq 'valid title'
-        expect(question.body).to eq 'valid body'
+        expect(question.title).to eq old_title
+        expect(question.body).to eq old_body
       end
 
       it 'rerenders edit view' do
+        patch :update, id: question, question: { title: 'new title 2', body: nil }
         expect(response).to render_template :edit
       end
     end
@@ -142,9 +146,10 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'does not change question attributes' do
+        old_title = question.title
         patch :update, id: question, question: { title: 'wrong title' }
         question.reload
-        expect(question.title).to eq 'valid title'
+        expect(question.title).to eq old_title
       end
 
       it 'redirects to question' do

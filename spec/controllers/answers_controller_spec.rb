@@ -97,14 +97,15 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      before { patch :update, question_id: question, id: answer, answer: attributes_for(:answer, body: nil) }
-
       it 'does not change answer attributes' do
+        initial_text = answer.body
+        patch :update, question_id: question, id: answer, answer: attributes_for(:answer, body: nil)
         answer.reload
-        expect(answer.body).to eq 'Answer text'
+        expect(answer.body).to eq initial_text
       end
 
       it 'rerenders edit view' do
+        patch :update, question_id: question, id: answer, answer: attributes_for(:answer, body: nil)
         expect(response).to render_template :edit
       end
     end
