@@ -119,7 +119,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'with invalid user' do
+    context 'with icorrect user' do
       before do
         question.user = create(:user)
         question.save!
@@ -143,7 +143,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     let(:question) { create(:question, user: @user) }
 
-    context 'with valid user' do
+    context 'with correct user' do
       before { question }
 
       it 'deletes question' do
@@ -156,7 +156,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'with invalid user' do
+    context 'with incorrect user' do
       before do
         question.user = create(:user)
         question.save!
