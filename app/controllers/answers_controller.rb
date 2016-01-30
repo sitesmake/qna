@@ -3,10 +3,10 @@ class AnswersController < ApplicationController
   before_action :set_question
   before_action :load_answer, only: [:edit, :update, :destroy]
 
-  def new
-    @answer = @question.answers.new
-    @answer.user = current_user
-  end
+  #def new
+  #  @answer = @question.answers.new
+  #  @answer.user = current_user
+  #end
 
   def create
     @answer = @question.answers.new(answer_params.merge(user: current_user))
@@ -14,7 +14,9 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Your Answer was successfully created'
     else
-      render :new
+      flash[:alert] = @answer.errors.full_messages
+      redirect_to @question
+      #render :new
     end
   end
 

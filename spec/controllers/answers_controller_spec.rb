@@ -3,20 +3,20 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let!(:question) { create(:question) }
 
-  describe 'GET #new' do
-    sign_in_user
+  # describe 'GET #new' do
+  #   sign_in_user
 
-    before { get :new, question_id: question }
+  #   before { get :new, question_id: question }
 
-    it 'assigns a new Answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
+  #   it 'assigns a new Answer to @answer' do
+  #     expect(assigns(:answer)).to be_a_new(Answer)
+  #   end
 
-    it 'renders new view' do
-      expect(response).to render_template(:new)
-    end
+  #   it 'renders new view' do
+  #     expect(response).to render_template(:new)
+  #   end
 
-  end
+  # end
 
   describe 'POST #create' do
     sign_in_user
@@ -37,9 +37,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, question_id: question, answer: attributes_for(:answer, body: nil) }.not_to change(Answer, :count)
       end
 
-      it 'rerenders new view' do
+      it 'redirect to question page' do
         post :create, question_id: question, answer: attributes_for(:answer, body: nil)
-        expect(response).to render_template :new
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
