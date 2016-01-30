@@ -5,6 +5,7 @@ class AnswersController < ApplicationController
 
   def new
     @answer = @question.answers.new
+    @answer.user = current_user
   end
 
   def create

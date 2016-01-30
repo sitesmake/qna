@@ -19,9 +19,11 @@ feature 'User can create question', %q{
     click_on 'Ask question'
 
     expect(page).to have_content 'Your Question was successfully created'
+    expect(page).to have_content 'question title'
+    expect(page).to have_content 'text of the question'
   end
 
-  scenario 'User can not create the question with blank title or body' do
+  scenario 'User can not create the question with invalid attributes' do
     sign_in(user)
 
     visit questions_path
@@ -32,13 +34,6 @@ feature 'User can create question', %q{
     click_on 'Ask question'
     expect(page).not_to have_content 'Your Question was successfully created'
     expect(page).to have_content "Title can't be blank"
-
-    click_on 'Ask question'
-    fill_in 'Title', with: 'question title'
-    fill_in 'Body', with: ''
-    click_on 'Ask question'
-    expect(page).not_to have_content 'Your Question was successfully created'
-    expect(page).to have_content "Body can't be blank"
   end
 
 

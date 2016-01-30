@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :check_user, only: [:update, :destroy]
 
   def index
     @questions = Question.all
@@ -11,7 +12,7 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    @question = Question.new
+    @question = current_user.questions.new
   end
 
   def create
@@ -41,6 +42,13 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def check_user
+    if @question.user != current_user
+      redirect_to @question, alert: 'Only author allowed to edit this question'
+      return
+    end
+  end
 
   def load_question
     @question = Question.find(params[:id])
