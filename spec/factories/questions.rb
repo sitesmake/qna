@@ -10,7 +10,7 @@ FactoryGirl.define do
   factory :question do
     title
     body { generate(:question_body) }
-    association :user
+    user
   end
 
   factory :invalid_question, class: 'Question' do

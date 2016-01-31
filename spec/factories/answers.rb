@@ -4,8 +4,8 @@ FactoryGirl.define do
   end
 
   factory :answer do
-    association :question
+    question
     body
-    association :user
+    user
   end
 end

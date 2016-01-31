@@ -8,12 +8,17 @@ feature 'Guest can view questions and answers', %q{
 
   scenario 'Guest view the question and answers to that question' do
     question = create(:question)
-    answer1 = create(:answer, question: question)
-    answer2 = create(:answer)
+    valid_answers = create_list(:answer, 3, question: question)
+    invalid_answers = create_list(:answer, 2)
 
     visit question_path(question)
 
-    expect(page).to have_content answer1.body
-    expect(page).not_to have_content answer2.body
+    valid_answers.each do |answer|
+      expect(page).to have_content answer.body
+    end
+
+    invalid_answers.each do |answer|
+      expect(page).not_to have_content answer.body
+    end
   end
 end

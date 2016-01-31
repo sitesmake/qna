@@ -7,12 +7,12 @@ feature 'Guest can view questions', %q{
 } do
 
   scenario 'Guest views the questions' do
-    question1 = create(:question, title: 'Question 1')
-    question2 = create(:question, title: 'Question 2')
+    questions = create_list(:question, 3)
 
     visit questions_path
 
-    expect(page).to have_content 'Question 1'
-    expect(page).to have_content 'Question 2'
+    questions.each do |question|
+      expect(page).to have_content question.title
+    end
   end
 end
