@@ -23,16 +23,19 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    sign_in_user
+    let(:user) { create(:user) }
 
-    before { get :new }
+    before do
+      login(user)
+      get :new
+    end
 
     it 'assigns a new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
     end
 
     it 'assigns a current_user to @question' do
-      expect(assigns(:question).user).to eq(@user)
+      expect(assigns(:question).user).to eq(user)
     end
 
     it 'renders new view' do
@@ -41,7 +44,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    sign_in_user
+    let(:user) { create(:user) }
+
+    before { login(user) }
 
     context 'with valid attributes' do
       it 'saves the new question' do
@@ -55,7 +60,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'assigns a current_user to @question' do
         post :create, question: attributes_for(:question)
-        expect(assigns(:question).user).to eq(@user)
+        expect(assigns(:question).user).to eq(user)
       end
     end
 
@@ -72,11 +77,13 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    sign_in_user
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
 
-    let(:question) { create(:question, user: @user) }
-
-    before { get :edit, id: question }
+    before do
+      login(user)
+      get :edit, id: question
+    end
 
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq(question)
@@ -97,9 +104,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    sign_in_user
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
 
-    let(:question) { create(:question, user: @user) }
+    before { login(user) }
 
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
@@ -157,9 +165,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    sign_in_user
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
 
-    let(:question) { create(:question, user: @user) }
+    before { login(user) }
 
     it 'deletes question' do
       question

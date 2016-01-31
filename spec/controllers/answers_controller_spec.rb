@@ -19,7 +19,9 @@ RSpec.describe AnswersController, type: :controller do
   # end
 
   describe 'POST #create' do
-    sign_in_user
+    let(:user) { create(:user) }
+
+    before { login(user) }
 
     context 'with valid attributes' do
       it 'saves the new question' do
@@ -33,7 +35,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'creates answer with logged-in user' do
         post :create, question_id: question, answer: attributes_for(:answer)
-        expect(assigns(:answer).user).to eq(@user)
+        expect(assigns(:answer).user).to eq(user)
       end
     end
 
@@ -50,11 +52,13 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
-    sign_in_user
+    let(:user) { create(:user) }
+    let(:answer) { create(:answer, user: user) }
 
-    let(:answer) { create(:answer, user: @user) }
-
-    before { get :edit, question_id: question, id: answer }
+    before do
+      login(user)
+      get :edit, question_id: question, id: answer
+    end
 
     it 'assigns the requested answer to @answer' do
       expect(assigns(:answer)).to eq(answer)
@@ -74,9 +78,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    sign_in_user
+    let(:user) { create(:user) }
+    let!(:answer) { create(:answer, user: user) }
 
-    let!(:answer) { create(:answer, user: @user) }
+    before { login(user) }
 
     context 'with valid attributes' do
       it 'assigns the requested answer to @answer' do
@@ -120,33 +125,33 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    sign_in_user
+    let(:user) { create(:user) }
+    let!(:answer) { create(:answer, question: question, user: user) }
 
-    let!(:answer) { create(:answer, question: question, user: @user) }
+    context 'with correct user' do
+      before { login(user) }
 
-    it 'deletes answer' do
-      expect { delete :destroy, question_id: question, id: answer }.to change(question.answers, :count).by(-1)
-    end
+      it 'deletes answer' do
+        expect { delete :destroy, question_id: question, id: answer }.to change(question.answers, :count).by(-1)
+      end
 
-    it 'redirect to question view' do
-      delete :destroy, question_id: question, id: answer
-      expect(response).to redirect_to question
+      it 'redirect to question view' do
+        delete :destroy, question_id: question, id: answer
+        expect(response).to redirect_to question
+      end
     end
 
     context 'with incorrect user' do
+      let(:incorrect_user) { create(:user) }
+
+      before { login(incorrect_user) }
+
       it 'does not allow to destroy' do
-        answer = create(:answer, user: create(:user))
-
-        delete :destroy, question_id: question, id: answer
-
         expect { delete :destroy, question_id: question, id: answer }.not_to change(question.answers, :count)
       end
 
       it 'redirect to question' do
-        answer = create(:answer, user: create(:user))
-
         delete :destroy, question_id: question, id: answer
-
         expect(response).to redirect_to question
       end
     end
