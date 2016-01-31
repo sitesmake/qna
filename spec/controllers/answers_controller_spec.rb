@@ -30,6 +30,11 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question, answer: attributes_for(:answer)
         expect(response).to redirect_to question_path(question)
       end
+
+      it 'creates answer with logged-in user' do
+        post :create, question_id: question, answer: attributes_for(:answer)
+        expect(assigns(:answer).user).to eq(@user)
+      end
     end
 
     context 'with invalid attributes' do
@@ -41,11 +46,6 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question, answer: attributes_for(:answer, body: nil)
         expect(response).to redirect_to question_path(question)
       end
-    end
-
-    it 'creates answer with logged-in user' do
-      post :create, question_id: question, answer: attributes_for(:answer)
-      expect(assigns(:answer).user).to eq(@user)
     end
   end
 
@@ -94,6 +94,14 @@ RSpec.describe AnswersController, type: :controller do
         patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
         expect(response).to redirect_to question
       end
+
+      it 'does not allow to update for other user' do
+        answer = create(:answer, user: create(:user))
+
+        patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
+
+        expect(response).to redirect_to question
+      end
     end
 
     context 'with invalid attributes' do
@@ -108,14 +116,6 @@ RSpec.describe AnswersController, type: :controller do
         patch :update, question_id: question, id: answer, answer: attributes_for(:answer, body: nil)
         expect(response).to render_template :edit
       end
-    end
-
-    it 'does not allow to update for other user' do
-      answer = create(:answer, user: create(:user))
-
-      patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
-
-      expect(response).to redirect_to question
     end
   end
 

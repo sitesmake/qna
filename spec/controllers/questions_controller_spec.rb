@@ -53,6 +53,11 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
+
+      it 'assigns a current_user to @question' do
+        post :create, question: attributes_for(:question)
+        expect(assigns(:question).user).to eq(@user)
+      end
     end
 
     context 'with invalid attributes' do
@@ -64,11 +69,6 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
       end
-    end
-
-    it 'assigns a current_user to @question' do
-      post :create, question: attributes_for(:question)
-      expect(assigns(:question).user).to eq(@user)
     end
   end
 
@@ -122,8 +122,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      before {}
-
       it 'does not change question attributes' do
         old_title = question.title
         old_body = question.body
