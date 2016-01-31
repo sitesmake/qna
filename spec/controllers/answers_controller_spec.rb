@@ -133,12 +133,22 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to redirect_to question
     end
 
-    it 'does not allow to destroy for other user' do
-      answer = create(:answer, user: create(:user))
+    context 'with incorrect user' do
+      it 'does not allow to destroy' do
+        answer = create(:answer, user: create(:user))
 
-      delete :destroy, question_id: question, id: answer
+        delete :destroy, question_id: question, id: answer
 
-      expect(response).to redirect_to question
+        expect { delete :destroy, question_id: question, id: answer }.not_to change(question.answers, :count)
+      end
+
+      it 'redirect to question' do
+        answer = create(:answer, user: create(:user))
+
+        delete :destroy, question_id: question, id: answer
+
+        expect(response).to redirect_to question
+      end
     end
   end
 end
