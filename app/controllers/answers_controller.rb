@@ -40,7 +40,7 @@ class AnswersController < ApplicationController
   private
 
   def check_user
-    if @answer.user != current_user
+    unless current_user.author_of?(@answer)
       redirect_to @question, alert: "Only author allowed to modify answer"
     end
   end
