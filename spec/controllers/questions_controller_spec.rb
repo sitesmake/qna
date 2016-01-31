@@ -15,11 +15,10 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'assigns the requested question answers to @answers' do
-      answer1 = create(:answer, question: question)
-      answer2 = create(:answer)
-      answer3 = create(:answer, question: question)
+      answer1, answer2 = create_list(:answer, 2, question: question)
+      other_answer = create(:answer)
 
-      expect(assigns(:answers)).to eq [answer1, answer3]
+      expect(assigns(:answers)).to eq [answer1, answer2]
     end
   end
 
