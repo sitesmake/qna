@@ -36,6 +36,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'pry'
+  gem 'pry-remote'
 end
 
 group :development do
@@ -53,7 +54,9 @@ end
 
 group :test do
 	gem 'shoulda-matchers'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 gem 'slim-rails'
-
+gem 'devise'
