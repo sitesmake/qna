@@ -47,7 +47,6 @@ class QuestionsController < ApplicationController
   def check_user
     unless current_user.author_of?(@question)
       redirect_to @question, alert: 'Only author allowed to edit this question'
-      return
     end
   end
 

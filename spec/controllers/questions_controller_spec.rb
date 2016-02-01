@@ -15,10 +15,10 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'assigns the requested question answers to @answers' do
-      answer1, answer2 = create_list(:answer, 2, question: question)
+      correct_answers = create_list(:answer, 2, question: question)
       other_answer = create(:answer)
 
-      expect(assigns(:answers)).to eq [answer1, answer2]
+      expect(assigns(:answers)).to match_array correct_answers
     end
   end
 
@@ -197,6 +197,4 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
-
-
 end

@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let!(:question) { create(:question) }
+  let(:user) { create(:user) }
+
+  before { login(user) }
 
   # describe 'GET #new' do
   #   sign_in_user
@@ -19,10 +22,6 @@ RSpec.describe AnswersController, type: :controller do
   # end
 
   describe 'POST #create' do
-    let(:user) { create(:user) }
-
-    before { login(user) }
-
     context 'with valid attributes' do
       it 'saves the new question' do
         expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
@@ -52,11 +51,9 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
-    let(:user) { create(:user) }
     let(:answer) { create(:answer, user: user) }
 
     before do
-      login(user)
       get :edit, question_id: question, id: answer
     end
 
@@ -69,7 +66,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'does not allow to edit for other user' do
-      answer = create(:answer, user: create(:user))
+      answer = create(:answer)
 
       get :edit, question_id: question, id: answer
 
@@ -78,10 +75,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:user) { create(:user) }
     let!(:answer) { create(:answer, user: user) }
-
-    before { login(user) }
 
     context 'with valid attributes' do
       it 'assigns the requested answer to @answer' do
@@ -101,7 +95,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'does not allow to update for other user' do
-        answer = create(:answer, user: create(:user))
+        answer = create(:answer)
 
         patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
 
@@ -125,12 +119,9 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:user) { create(:user) }
     let!(:answer) { create(:answer, question: question, user: user) }
 
     context 'with correct user' do
-      before { login(user) }
-
       it 'deletes answer' do
         expect { delete :destroy, question_id: question, id: answer }.to change(question.answers, :count).by(-1)
       end
