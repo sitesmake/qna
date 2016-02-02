@@ -12,12 +12,17 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params.merge(user: current_user))
 
-    if @answer.save
-      redirect_to @question, notice: 'Your Answer was successfully created'
-    else
-      flash[:alert] = @answer.errors.full_messages
-      redirect_to @question
-      #render :new
+    respond_to do |format|
+      if @answer.save
+        format.html { redirect_to @question, notice: 'Your Answer was successfully created' }
+        format.js
+      else
+        format.html do
+          flash[:alert] = @answer.errors.full_messages
+          redirect_to @question
+        end
+        #render :new
+      end
     end
   end
 
