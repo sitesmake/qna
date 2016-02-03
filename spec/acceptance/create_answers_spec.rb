@@ -21,4 +21,14 @@ feature 'User answer', %q{
       expect(page).to have_content 'Use Rails!'
     end
   end
+
+  scenario 'Authenticated user try to create empty answer', js: true do
+    sign_in(user)
+    visit question_path(question)
+
+    click_on 'Post answer'
+
+    expect(current_path).to eq question_path(question)
+    expect(page).to have_content "Body can't be blank"
+  end
 end

@@ -21,6 +21,7 @@ class AnswersController < ApplicationController
           flash[:alert] = @answer.errors.full_messages
           redirect_to @question
         end
+        format.js { @errors = @answer.errors.full_messages }
         #render :new
       end
     end
