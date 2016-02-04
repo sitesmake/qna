@@ -1,4 +1,4 @@
-<% if @answer %>
+<% if @answer.valid? %>
   $('.answers').append('<%= j render @answer %>');
 <% end %>
 <% if @errors %>
