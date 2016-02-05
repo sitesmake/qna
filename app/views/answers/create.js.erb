@@ -1,7 +1,1 @@
-<% if @answer.valid? %>
-  $('.answers').append('<%= j render @answer %>');
-<% end %>
-<% if @errors %>
-  $('form').prepend('<div class="ajax-error"><%= @errors.join('; ') %></div>');
-  $('.ajax-error').fadeOut(5000);
-<% end %>
+$('.answers').append('<%= j render @answer %>');
