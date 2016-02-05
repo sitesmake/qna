@@ -1,14 +1,13 @@
 h1 = @question.title
 p = @question.body
 
-- @answers.each do |answer|
-  p = answer.body
+.answers = render @answers
 
 - if current_user
-  = form_for [@question, @answer] do |f|
+  = form_for [@question, @answer], remote: true do |f|
     - if @answer.errors.any?
       ul
-        =@answer.errors.full_messages.each do |message|
+        = @answer.errors.full_messages.each do |message|
           li = message
     .field
       = f.label :body, 'Answer'
