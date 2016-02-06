@@ -10,7 +10,7 @@ feature 'User answer', %q{
   given(:question) { create(:question) }
 
   scenario 'Authenticated user create answer', js: true do
-    sign_in(user)
+    sign_in user
     visit question_path(question)
 
     fill_in 'Answer', with: 'Use Rails!'
@@ -20,5 +20,14 @@ feature 'User answer', %q{
     within '.answers' do
       expect(page).to have_content 'Use Rails!'
     end
+  end
+
+  scenario 'Authenticated user try to create blank answer', js: true do
+    sign_in user
+    visit question_path(question)
+
+    click_on 'Post answer'
+
+    expect(page).to have_content "Body can't be blank"
   end
 end

@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   before_action :check_user, only: [:edit, :update, :destroy]
 
   def create
-    @answer = @question.answers.new(answer_params.merge(user: current_user))
+    @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
 
   def edit

@@ -5,10 +5,7 @@ p = @question.body
 
 - if current_user
   = form_for [@question, @answer], remote: true do |f|
-    - if @answer.errors.any?
-      ul
-        = @answer.errors.full_messages.each do |message|
-          li = message
+    .answer-errors
     .field
       = f.label :body, 'Answer'
       br
