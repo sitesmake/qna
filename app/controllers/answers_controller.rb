@@ -6,17 +6,15 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user))
+    @answers = @question.answers
   end
 
   def edit
   end
 
   def update
-    if @answer.update(answer_params)
-      redirect_to @question, notice: 'Your Answer was successfully updated'
-    else
-      render :edit
-    end
+    @answer.update(answer_params)
+    @answers = @question.answers
   end
 
   def destroy

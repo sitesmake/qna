@@ -33,44 +33,23 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #update' do
     let!(:answer) { create(:answer, user: user) }
 
-    context 'with valid attributes' do
-      it 'assigns the requested answer to @answer' do
-        patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
-        expect(assigns(:answer)).to eq answer
-      end
-
-      it 'changes answer attributes' do
-        patch :update, question_id: question, id: answer, answer: { body: 'new body 2' }
-        answer.reload
-        expect(answer.body).to eq 'new body 2'
-      end
-
-      it 'redirects to the updated answer question' do
-        patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
-        expect(response).to redirect_to question
-      end
-
-      it 'does not allow to update for other user' do
-        answer = create(:answer)
-
-        patch :update, question_id: question, id: answer, answer: attributes_for(:answer)
-
-        expect(response).to redirect_to question
-      end
+    it 'assigns the requested answer to @answer' do
+      patch :update, question_id: question, id: answer, answer: attributes_for(:answer), format: :js
+      expect(assigns(:answer)).to eq answer
     end
 
-    context 'with invalid attributes' do
-      it 'does not change answer attributes' do
-        initial_text = answer.body
-        patch :update, question_id: question, id: answer, answer: attributes_for(:answer, body: nil)
-        answer.reload
-        expect(answer.body).to eq initial_text
-      end
+    it 'changes answer attributes' do
+      patch :update, question_id: question, id: answer, answer: { body: 'new body 2' }, format: :js
+      answer.reload
+      expect(answer.body).to eq 'new body 2'
+    end
 
-      it 'rerenders edit view' do
-        patch :update, question_id: question, id: answer, answer: attributes_for(:answer, body: nil)
-        expect(response).to render_template :edit
-      end
+    it 'does not allow to update for other user' do
+      answer = create(:answer)
+
+      patch :update, question_id: question, id: answer, answer: attributes_for(:answer), format: :js
+
+      expect(response).to redirect_to question
     end
   end
 

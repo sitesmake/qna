@@ -1,7 +1,7 @@
 h1 = @question.title
 p = @question.body
 
-.answers = render @answers
+.answers = render 'answers'
 
 - if current_user
   = form_for [@question, @answer], remote: true do |f|
