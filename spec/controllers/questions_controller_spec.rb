@@ -111,20 +111,15 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
-        patch :update, id: question, question: attributes_for(:question)
+        patch :update, id: question, question: attributes_for(:question), format: :js
         expect(assigns(:question)).to eq question
       end
 
       it 'changes question attributes' do
-        patch :update, id: question, question: {title: 'new title 2', body: 'new body 2'}
+        patch :update, id: question, question: {title: 'new title 2', body: 'new body 2'}, format: :js
         question.reload
         expect(question.title).to eq 'new title 2'
         expect(question.body).to eq 'new body 2'
-      end
-
-      it 'redirects to the updated question' do
-        patch :update, id: question, question: attributes_for(:question)
-        expect(response).to redirect_to question
       end
     end
 
@@ -132,15 +127,10 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not change question attributes' do
         old_title = question.title
         old_body = question.body
-        patch :update, id: question, question: { title: 'new title 2', body: nil }
+        patch :update, id: question, question: { title: 'new title 2', body: nil }, format: :js
         question.reload
         expect(question.title).to eq old_title
         expect(question.body).to eq old_body
-      end
-
-      it 'rerenders edit view' do
-        patch :update, id: question, question: { title: 'new title 2', body: nil }
-        expect(response).to render_template :edit
       end
     end
 
@@ -152,14 +142,9 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'does not change question attributes' do
         old_title = question.title
-        patch :update, id: question, question: { title: 'wrong title' }
+        patch :update, id: question, question: { title: 'wrong title' }, format: :js
         question.reload
         expect(question.title).to eq old_title
-      end
-
-      it 'redirects to question' do
-        patch :update, id: question, question: attributes_for(:question)
-        expect(response).to redirect_to question_path
       end
     end
   end

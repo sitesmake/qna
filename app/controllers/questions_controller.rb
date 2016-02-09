@@ -30,11 +30,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(question_params)
-      redirect_to @question, notice: 'Your Question was successfully updated'
-    else
-      render :edit
-    end
+    @question.update(question_params)
   end
 
   def destroy
