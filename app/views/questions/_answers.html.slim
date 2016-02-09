@@ -1,7 +1,7 @@
 - @answers.each do |answer|
 	hr
 	p = answer.body
-	- if user_signed_in? && answer.persisted?
+	- if (current_user == answer.user) && answer.persisted?
 	  p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 	  p = form_for [@question, answer], remote: true do |f|
 	    = f.label "#{answer.id}", "Answer"
