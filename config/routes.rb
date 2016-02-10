@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
+  get 'questions/:id/set_best_answer/:answer_id' => 'questions#set_best_answer', as: :set_best_answer
+
   devise_for :users
+
   resources :questions do
     resources :answers
   end

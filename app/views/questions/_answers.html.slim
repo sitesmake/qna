@@ -1,9 +1,15 @@
 - @answers.each do |answer|
-	hr
-	p = answer.body
-	- if (current_user == answer.user) && answer.persisted?
-	  p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-	  p = form_for [@question, answer], remote: true do |f|
-	    = f.label "#{answer.id}", "Answer"
-	    = f.text_area :body, id: "answer_#{answer.id}"
-	    = f.submit 'Save'
+	div[class="answer-#{answer.id}"]
+		hr
+		p = answer.body
+		- if (current_user == @question.user) && answer.persisted? && @question.best_answer_id != answer.id
+		  p = link_to 'Set as best answer', set_best_answer_path(question: @question, answer_id: answer), class: 'set-best-answer-link', remote: true
+		- if (current_user == answer.user) && answer.persisted?
+		  p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+		  p = form_for [@question, answer], remote: true do |f|
+		    = f.label "#{answer.id}", "Answer"
+		    = f.text_area :body, id: "answer_#{answer.id}"
+		    = f.submit 'Save'
+
+script
+	| $('.answer-#{@question.best_answer_id}').detach().prependTo('.answers');
