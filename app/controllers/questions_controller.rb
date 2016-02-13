@@ -3,11 +3,6 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy, :set_best_answer]
   before_action :check_user, only: [:edit, :update, :destroy, :set_best_answer]
 
-  def set_best_answer
-    Answer.find(params[:answer_id]).make_best
-    @answers = @question.answers
-  end
-
   def index
     @questions = Question.all
   end

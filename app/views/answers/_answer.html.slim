@@ -2,7 +2,7 @@ div[class="answer-#{answer.id}"]
 	hr
 	p = answer.body
 	- if (current_user == @question.user) && answer.persisted? && !answer.best?
-	  p = link_to 'Set as best answer', set_best_answer_path(id: @question, answer_id: answer), class: 'set-best-answer-link', remote: true
+	  p = link_to 'Set as best answer', set_best_answer_path(answer), class: 'set-best-answer-link', remote: true
 	- if (current_user == answer.user) && answer.persisted?
 	  p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 	  p = form_for [@question, answer], remote: true do |f|

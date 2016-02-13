@@ -1,8 +1,14 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question
-  before_action :load_answer, only: [:edit, :update, :destroy]
+  before_action :set_question, except: [:set_best_answer]
+  before_action :load_answer, only: [:edit, :update, :destroy, :set_best_answer]
   before_action :check_user, only: [:edit, :update, :destroy]
+
+  def set_best_answer
+    @answer.make_best
+    @question = @answer.question
+    @answers = @question.answers
+  end
 
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user))
