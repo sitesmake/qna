@@ -16,24 +16,26 @@ feature 'Best answer', %q{
     answer1.make_best
   end
 
-  scenario 'Unauthenticated user can not select best answer', js: true do
+  scenario 'Guest user can not select best answer', js: true do
     visit question_path(question)
 
     expect(page).to_not have_link 'Set as best answer'
   end
 
-  describe 'Authenticated user' do
-    scenario 'Not-author of question can not select best answer', js: true do
-      other_user = create(:user)
-      sign_in other_user
-      visit question_path(question)
-      expect(page).to_not have_link 'Set as best answer'
-    end
+  scenario 'Not-author of question can not select best answer', js: true do
+    other_user = create(:user)
+    sign_in other_user
+    visit question_path(question)
+    expect(page).to_not have_link 'Set as best answer'
+  end
 
-    scenario 'Author of question can select best answer', js: true do
+  describe 'Author of question' do
+    before do
       sign_in user
       visit question_path(question)
+    end
 
+    scenario 'view select best answer links, except current', js: true do
       expect(page.find(:xpath, '(//div[@class="answers"]/div)[1]')).to have_content answer1.body
 
       within ".answer-#{answer1.id}" do
@@ -45,23 +47,14 @@ feature 'Best answer', %q{
       within ".answer-#{answer3.id}" do
         expect(page).to have_link 'Set as best answer'
       end
+    end
 
+    scenario 'can change best answer', js: true do
       within ".answer-#{answer2.id}" do
         click_on "Set as best answer"
       end
 
       expect(page.find(:xpath, '(//div[@class="answers"]/div)[1]')).to have_content answer2.body
-
-      within ".answer-#{answer1.id}" do
-        expect(page).to have_link 'Set as best answer'
-      end
-      within ".answer-#{answer2.id}" do
-        expect(page).to_not have_link 'Set as best answer'
-      end
-      within ".answer-#{answer3.id}" do
-        expect(page).to have_link 'Set as best answer'
-      end
-
     end
   end
 end
