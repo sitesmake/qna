@@ -6,11 +6,4 @@
 	$('.answers').html('<%= j render 'questions/answers' %>');
   $('.answer-errors').html('');
   $('#answer_body').val('');
-
-  $('.edit-answer-link').click(function(e){
-  	e.preventDefault();
-  	$(this).hide();
-  	var answer_id = $(this).data('answer-id');
-  	$('form#edit_answer_' + answer_id).show();
-  });
 <% end %>
