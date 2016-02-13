@@ -8,10 +8,6 @@ class Answer < ActiveRecord::Base
 
   default_scope { order('best DESC, updated_at') }
 
-  def best?
-  	best
-  end
-
   def make_best
   	Answer.where(question: self.question, best: true).update_all(best: false)
   	self.update_attributes(best: true)
