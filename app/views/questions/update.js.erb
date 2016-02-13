@@ -3,6 +3,6 @@
 		$('.question-errors').html('<%= j message %>');
 	<% end %>
 <% else %>
-	$('#question').html('<%= j render 'question' %>');
+	$('#question').html('<%= j render @question %>');
   $('.question-errors').html('');
 <% end %>
