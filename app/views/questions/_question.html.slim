@@ -1,6 +1,6 @@
 h1 = @question.title
 p = @question.body
-- if current_user == @question.user
+- if current_user && current_user.author_of?(@question)
   p = link_to '(edit)', '#', id: 'edit-question-link'
   p = link_to '(delete)', @question, id: 'delete-question-link', method: :delete
   p = form_for [@question], remote: true do |f|
