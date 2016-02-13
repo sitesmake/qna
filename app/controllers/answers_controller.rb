@@ -1,8 +1,8 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, except: [:set_best_answer]
-  before_action :load_answer, only: [:edit, :update, :destroy, :set_best_answer]
-  before_action :check_user, only: [:edit, :update, :destroy]
+  before_action :load_answer, except: [:create]
+  before_action :set_question
+  before_action :check_user, except: [:create]
 
   def set_best_answer
     @answer.make_best
@@ -16,6 +16,7 @@ class AnswersController < ApplicationController
   end
 
   def edit
+    @question = @answer.question
   end
 
   def update
@@ -37,7 +38,11 @@ class AnswersController < ApplicationController
   end
 
   def set_question
-    @question = Question.find(params[:question_id])
+    if params[:question_id]
+      @question = Question.find(params[:question_id])
+    else
+      @question = @answer.question
+    end
   end
 
   def load_answer
