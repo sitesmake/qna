@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
   before_action :check_user, only: [:edit, :update, :destroy, :set_best_answer]
 
   def set_best_answer
-    @question.update_attributes(best_answer_id: params[:answer_id])
+    Answer.find(params[:answer_id]).make_best
     @answers = @question.answers
   end
 

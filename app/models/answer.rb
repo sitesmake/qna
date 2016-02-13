@@ -6,6 +6,8 @@ class Answer < ActiveRecord::Base
   validates :question_id, numericality: true, presence: true
   validates :user_id, numericality: true, presence: true
 
+  default_scope { order('best DESC, updated_at') }
+
   def best?
   	best
   end

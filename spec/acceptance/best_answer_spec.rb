@@ -10,10 +10,10 @@ feature 'Best answer', %q{
   given!(:question) { create(:question, user: user) }
   given!(:answer1) { create(:answer, user: user, question: question) }
   given!(:answer2) { create(:answer, user: user, question: question) }
+  given!(:answer3) { create(:answer, user: user, question: question) }
 
   before do
-    question.best_answer_id = answer1.id
-    question.save!
+    answer1.make_best
   end
 
   scenario 'Unauthenticated user can not select best answer', js: true do
@@ -34,6 +34,7 @@ feature 'Best answer', %q{
       sign_in user
       visit question_path(question)
 
+      expect(page.find(:xpath, '(//div[@class="answers"]/div)[1]')).to have_content answer1.body
 
       within ".answer-#{answer1.id}" do
         expect(page).to_not have_link 'Set as best answer'
@@ -41,14 +42,24 @@ feature 'Best answer', %q{
       within ".answer-#{answer2.id}" do
         expect(page).to have_link 'Set as best answer'
       end
+      within ".answer-#{answer3.id}" do
+        expect(page).to have_link 'Set as best answer'
+      end
 
-      click_on 'Set as best answer'
+      within ".answer-#{answer2.id}" do
+        click_on "Set as best answer"
+      end
+
+      expect(page.find(:xpath, '(//div[@class="answers"]/div)[1]')).to have_content answer2.body
 
       within ".answer-#{answer1.id}" do
         expect(page).to have_link 'Set as best answer'
       end
       within ".answer-#{answer2.id}" do
         expect(page).to_not have_link 'Set as best answer'
+      end
+      within ".answer-#{answer3.id}" do
+        expect(page).to have_link 'Set as best answer'
       end
 
     end
