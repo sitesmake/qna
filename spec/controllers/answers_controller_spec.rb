@@ -6,41 +6,20 @@ RSpec.describe AnswersController, type: :controller do
 
   before { login(user) }
 
-  describe 'GET #edit' do
-    let(:answer) { create(:answer, user: user) }
-
-    before do
-      get :edit, question_id: question, id: answer
-    end
-
-    it 'assigns the requested answer to @answer' do
-      expect(assigns(:answer)).to eq(answer)
-    end
-
-    it 'renders edit view' do
-      expect(response).to render_template :edit
-    end
-
-    it 'does not allow to edit for other user' do
-      answer = create(:answer)
-
-      get :edit, question_id: question, id: answer
-
-      expect(response).to redirect_to question
-    end
-  end
-
   describe 'PATCH #update' do
     let!(:answer) { create(:answer, user: user) }
 
     it 'assigns the requested answer to @answer' do
       patch :update, question_id: question, id: answer, answer: attributes_for(:answer), format: :js
+
       expect(assigns(:answer)).to eq answer
     end
 
     it 'changes answer attributes' do
       patch :update, question_id: question, id: answer, answer: { body: 'new body 2' }, format: :js
+
       answer.reload
+
       expect(answer.body).to eq 'new body 2'
     end
 
@@ -49,21 +28,44 @@ RSpec.describe AnswersController, type: :controller do
 
       patch :update, question_id: question, id: answer, answer: attributes_for(:answer), format: :js
 
-      expect(response).to redirect_to question
+      expect(response).to be_forbidden
     end
   end
 
   describe 'POST #set_best_answer' do
-    it 'assigns the requested answer to @answer' do
-      answer = create(:answer)
-      post :set_best_answer, id: answer, format: :js
-      expect(assigns(:answer)).to eq answer
+    let!(:answer) { create(:answer) }
+
+    context 'with correct user' do
+      before do
+        answer.question.update_attributes(user: user)
+        post :set_best_answer, id: answer, format: :js
+      end
+
+      it 'assigns the requested answer to @answer' do
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'sets the correct question' do
+        expect(assigns(:question)).to eq answer.question
+      end
+
+      it 'sets the best answer' do
+        answer.reload
+        expect(answer).to be_best
+      end
     end
 
-    it 'sets the correct question' do
-      answer = create(:answer, question: question)
-      post :set_best_answer, id: answer, format: :js
-      expect(assigns(:question)).to eq question
+    context 'with incorrect user' do
+      before { post :set_best_answer, id: answer, format: :js }
+
+      it 'does not allow to set_best_answer' do
+        answer.reload
+        expect(answer).to_not be_best
+      end
+
+      it 'returns forbidden' do
+        expect(response).to be_forbidden
+      end
     end
   end
 
@@ -72,12 +74,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with correct user' do
       it 'deletes answer' do
-        expect { delete :destroy, question_id: question, id: answer }.to change(question.answers, :count).by(-1)
-      end
-
-      it 'redirect to question view' do
-        delete :destroy, question_id: question, id: answer
-        expect(response).to redirect_to question
+        expect { delete :destroy, question_id: question, id: answer, format: :js }.to change(question.answers, :count).by(-1)
       end
     end
 
@@ -87,12 +84,12 @@ RSpec.describe AnswersController, type: :controller do
       before { login(incorrect_user) }
 
       it 'does not allow to destroy' do
-        expect { delete :destroy, question_id: question, id: answer }.not_to change(question.answers, :count)
+        expect { delete :destroy, question_id: question, id: answer, format: :js }.not_to change(question.answers, :count)
       end
 
-      it 'redirect to question' do
+      it 'returns forbidden' do
         delete :destroy, question_id: question, id: answer
-        expect(response).to redirect_to question
+        expect(response).to be_forbidden
       end
     end
   end

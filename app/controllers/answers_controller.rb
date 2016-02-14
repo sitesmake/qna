@@ -15,9 +15,6 @@ class AnswersController < ApplicationController
     @answers = @question.answers
   end
 
-  def edit
-  end
-
   def update
     @answer.update(answer_params)
     @answers = @question.answers
@@ -25,20 +22,19 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy
-    redirect_to @question
   end
 
   private
 
   def check_answer_author
     unless current_user.author_of?(@answer)
-      redirect_to @question, alert: "Only author allowed to modify answer"
+      head(:forbidden)
     end
   end
 
   def check_question_author
     unless current_user.author_of?(@question)
-      redirect_to @question, alert: "Only author allowed to set best answer"
+      head(:forbidden)
     end
   end
 
