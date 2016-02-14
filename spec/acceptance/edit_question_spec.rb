@@ -41,11 +41,9 @@ feature 'Question editing', %q{
     end
 
     scenario 'try to edit other user question', js: true do
-      other_user = create(:user)
-      question.user = other_user
-      question.save!
+      new_question = create(:question)
 
-      visit question_path(question)
+      visit question_path(new_question)
 
       expect(page).to_not have_link '(edit)'
     end

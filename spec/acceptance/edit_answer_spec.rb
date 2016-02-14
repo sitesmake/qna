@@ -45,13 +45,13 @@ feature 'Answer editing', %q{
     end
 
     scenario 'try to edit other user answer', js: true do
-      other_user = create(:user)
-      answer.user = other_user
-      answer.save!
+      new_answer = create(:answer, question: question)
 
       visit question_path(question)
 
-      expect(page).to_not have_link 'Edit'
+      within ".answer-#{new_answer.id}" do
+        expect(page).to_not have_link 'Edit'
+      end
     end
   end
 

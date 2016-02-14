@@ -1,11 +1,12 @@
 div[class="answer-#{answer.id}"]
 	hr
 	p = answer.body
-	- if current_user && current_user.author_of?(@question) && answer.persisted? && !answer.best?
-	  p = link_to 'Set as best answer', set_best_answer_path(answer), class: 'set-best-answer-link', remote: true
-	- if current_user && current_user.author_of?(answer) && answer.persisted?
-	  p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-	  p = form_for answer, remote: true do |f|
-	    = f.label "#{answer.id}", "Answer"
-	    = f.text_area :body, id: "answer_#{answer.id}"
-	    = f.submit 'Save'
+    - if answer.persisted? && current_user
+      - if current_user.author_of?(@question) && !answer.best?
+        p = link_to 'Set as best answer', set_best_answer_path(answer), class: 'set-best-answer-link', remote: true, method: :post
+      - if current_user.author_of?(answer)
+        p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+        p = form_for answer, remote: true do |f|
+          = f.label "#{answer.id}", "Answer"
+          = f.text_area :body, id: "answer_#{answer.id}"
+          = f.submit 'Save'

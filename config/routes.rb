@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
-  get 'answers/:id/set_best_answer' => 'answers#set_best_answer', as: :set_best_answer
+  #get 'answers/:id/set_best_answer' => 'answers#set_best_answer', as: :set_best_answer
 
   devise_for :users
 
   resources :questions do
-    resources :answers, shallow: true
+    resources :answers, shallow: true do
+      post 'set_best_answer', on: :member, as: :set_best
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

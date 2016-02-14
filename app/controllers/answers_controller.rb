@@ -1,12 +1,12 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_answer, except: [:create]
+  before_action :load_answer, except: :create
   before_action :set_question
-  before_action :check_user, except: [:create]
+  before_action :check_answer_author, except: [:create, :set_best_answer]
+  before_action :check_question_author, only: :set_best_answer
 
   def set_best_answer
     @answer.make_best
-    @question = @answer.question
     @answers = @question.answers
   end
 
@@ -16,7 +16,6 @@ class AnswersController < ApplicationController
   end
 
   def edit
-    @question = @answer.question
   end
 
   def update
@@ -31,9 +30,15 @@ class AnswersController < ApplicationController
 
   private
 
-  def check_user
+  def check_answer_author
     unless current_user.author_of?(@answer)
       redirect_to @question, alert: "Only author allowed to modify answer"
+    end
+  end
+
+  def check_question_author
+    unless current_user.author_of?(@question)
+      redirect_to @question, alert: "Only author allowed to set best answer"
     end
   end
 
