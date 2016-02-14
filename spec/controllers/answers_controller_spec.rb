@@ -53,6 +53,20 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'POST #set_best_answer' do
+    it 'assigns the requested answer to @answer' do
+      answer = create(:answer)
+      post :set_best_answer, id: answer, format: :js
+      expect(assigns(:answer)).to eq answer
+    end
+
+    it 'sets the correct question' do
+      answer = create(:answer, question: question)
+      post :set_best_answer, id: answer, format: :js
+      expect(assigns(:question)).to eq question
+    end
+  end
+
   describe 'DELETE #destroy' do
     let!(:answer) { create(:answer, question: question, user: user) }
 
