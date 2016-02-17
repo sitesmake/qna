@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :answers, shallow: true do
-      post 'set_best_answer', on: :member, as: :set_best
+      post 'set_best', on: :member
     end
   end
 

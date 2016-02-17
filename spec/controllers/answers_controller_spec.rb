@@ -32,13 +32,13 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'POST #set_best_answer' do
+  describe 'POST #set_best' do
     let!(:answer) { create(:answer) }
 
     context 'with correct user' do
       before do
         answer.question.update_attributes(user: user)
-        post :set_best_answer, id: answer, format: :js
+        post :set_best, id: answer, format: :js
       end
 
       it 'assigns the requested answer to @answer' do
@@ -56,9 +56,9 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with incorrect user' do
-      before { post :set_best_answer, id: answer, format: :js }
+      before { post :set_best, id: answer, format: :js }
 
-      it 'does not allow to set_best_answer' do
+      it 'does not allow to set_best' do
         answer.reload
         expect(answer).to_not be_best
       end
