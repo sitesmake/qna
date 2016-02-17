@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'User can create question', %q{
   In order to ask question
@@ -32,6 +32,7 @@ feature 'User can create question', %q{
     fill_in 'Title', with: ''
     fill_in 'Body', with: 'text of the question'
     click_on 'Ask question'
+
     expect(page).not_to have_content 'Your Question was successfully created'
     expect(page).to have_content "Title can't be blank"
   end

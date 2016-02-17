@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
-  before_action :check_user, only: [:edit, :update, :destroy]
+  before_action :load_question, only: [:show, :update, :destroy]
+  before_action :check_user, only: [:update, :destroy]
 
   def index
     @questions = Question.all
@@ -26,15 +26,8 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   def update
-    if @question.update(question_params)
-      redirect_to @question, notice: 'Your Question was successfully updated'
-    else
-      render :edit
-    end
+    @question.update(question_params)
   end
 
   def destroy
@@ -46,7 +39,7 @@ class QuestionsController < ApplicationController
 
   def check_user
     unless current_user.author_of?(@question)
-      redirect_to @question, alert: 'Only author allowed to edit this question'
+      head(:forbidden)
     end
   end
 

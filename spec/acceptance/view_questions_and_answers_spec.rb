@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'Guest can view questions and answers', %q{
   In order to view question and answers

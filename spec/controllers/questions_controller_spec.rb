@@ -76,33 +76,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    let(:user) { create(:user) }
-    let(:question) { create(:question, user: user) }
-
-    before do
-      login(user)
-      get :edit, id: question
-    end
-
-    it 'assigns the requested question to @question' do
-      expect(assigns(:question)).to eq(question)
-    end
-
-    it 'renders edit view' do
-      expect(response).to render_template :edit
-    end
-
-    it 'redirects to question with incorrect user' do
-      question.user = create(:user)
-      question.save!
-
-      get :edit, id: question
-
-      expect(response).to redirect_to question_path
-    end
-  end
-
   describe 'PATCH #update' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
@@ -111,20 +84,15 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
-        patch :update, id: question, question: attributes_for(:question)
+        patch :update, id: question, question: attributes_for(:question), format: :js
         expect(assigns(:question)).to eq question
       end
 
       it 'changes question attributes' do
-        patch :update, id: question, question: {title: 'new title 2', body: 'new body 2'}
+        patch :update, id: question, question: {title: 'new title 2', body: 'new body 2'}, format: :js
         question.reload
         expect(question.title).to eq 'new title 2'
         expect(question.body).to eq 'new body 2'
-      end
-
-      it 'redirects to the updated question' do
-        patch :update, id: question, question: attributes_for(:question)
-        expect(response).to redirect_to question
       end
     end
 
@@ -132,15 +100,10 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not change question attributes' do
         old_title = question.title
         old_body = question.body
-        patch :update, id: question, question: { title: 'new title 2', body: nil }
+        patch :update, id: question, question: { title: 'new title 2', body: nil }, format: :js
         question.reload
         expect(question.title).to eq old_title
         expect(question.body).to eq old_body
-      end
-
-      it 'rerenders edit view' do
-        patch :update, id: question, question: { title: 'new title 2', body: nil }
-        expect(response).to render_template :edit
       end
     end
 
@@ -152,31 +115,24 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'does not change question attributes' do
         old_title = question.title
-        patch :update, id: question, question: { title: 'wrong title' }
+        patch :update, id: question, question: { title: 'wrong title' }, format: :js
         question.reload
         expect(question.title).to eq old_title
-      end
-
-      it 'redirects to question' do
-        patch :update, id: question, question: attributes_for(:question)
-        expect(response).to redirect_to question_path
       end
     end
   end
 
   describe 'DELETE #destroy' do
     let(:user) { create(:user) }
-    let(:question) { create(:question, user: user) }
+    let!(:question) { create(:question, user: user) }
 
     before { login(user) }
 
     it 'deletes question' do
-      question
       expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
     end
 
     it 'redirect to index view' do
-      question
       delete :destroy, id: question
       expect(response).to redirect_to questions_path
     end
@@ -191,9 +147,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, id: question }.not_to change(Question, :count)
       end
 
-      it 'redirects to question' do
+      it 'returns forbidden' do
         delete :destroy, id: question
-        expect(response).to redirect_to question_path
+        expect(response).to be_forbidden
       end
     end
   end

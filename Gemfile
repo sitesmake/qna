@@ -58,6 +58,7 @@ group :test do
   gem 'capybara'
   gem 'launchy'
   gem 'selenium-webdriver'
+  gem 'capybara-webkit'
 end
 
 gem 'slim-rails'

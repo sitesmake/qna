@@ -1,39 +1,49 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
+  before_action :load_answer, except: :create
   before_action :set_question
-  before_action :load_answer, only: [:edit, :update, :destroy]
-  before_action :check_user, only: [:edit, :update, :destroy]
+  before_action :check_answer_author, except: [:create, :set_best]
+  before_action :check_question_author, only: :set_best
 
-  def create
-    @answer = @question.answers.new(answer_params.merge(user: current_user))
+  def set_best
+    @answer.make_best
+    @answers = @question.answers
   end
 
-  def edit
+  def create
+    @answer = @question.answers.create(answer_params.merge(user: current_user))
+    @answers = @question.answers
   end
 
   def update
-    if @answer.update(answer_params)
-      redirect_to @question, notice: 'Your Answer was successfully updated'
-    else
-      render :edit
-    end
+    @answer.update(answer_params)
+    @answers = @question.answers
   end
 
   def destroy
     @answer.destroy
-    redirect_to @question
   end
 
   private
 
-  def check_user
+  def check_answer_author
     unless current_user.author_of?(@answer)
-      redirect_to @question, alert: "Only author allowed to modify answer"
+      head(:forbidden)
+    end
+  end
+
+  def check_question_author
+    unless current_user.author_of?(@question)
+      head(:forbidden)
     end
   end
 
   def set_question
-    @question = Question.find(params[:question_id])
+    if params[:question_id]
+      @question = Question.find(params[:question_id])
+    else
+      @question = @answer.question
+    end
   end
 
   def load_answer
