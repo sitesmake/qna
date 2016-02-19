@@ -1,5 +1,11 @@
 h1 = question.title
 p = question.body
+
+p Attachments:
+ul
+  - @question.attachments.each do |a|
+	  li = a.file.file.filename
+
 - if current_user && current_user.author_of?(question)
   p = link_to '(edit)', '#', id: 'edit-question-link'
   p = link_to '(delete)', question, id: 'delete-question-link', method: :delete
