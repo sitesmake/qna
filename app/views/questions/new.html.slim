@@ -3,21 +3,18 @@
     ul
       =@question.errors.full_messages.each do |message|
         li = message
-  div.field
+  .field
     = f.label :title
     br
     = f.text_field :title
-  div.field
+  .field
     = f.label :body
     br
     = f.text_area :body
 
   br
-  div.field
-    = f.label 'Attachments'
-    = f.fields_for :attachments do |a|
-      = a.label :file
-      = a.file_field :file
+  .field
+    = render partial: 'attachments/attachment', object: @attachment, locals: {f: f}
 
-  div.actions
+  .actions
     = f.submit "Ask question"

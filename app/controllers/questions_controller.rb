@@ -10,11 +10,12 @@ class QuestionsController < ApplicationController
   def show
     @answer = @question.answers.build(user: current_user) if current_user
     @answers = @question.answers
+    @attachment = @answer.attachments.build
   end
 
   def new
     @question = current_user.questions.new
-    @question.attachments.build
+    @attachment = @question.attachments.build
   end
 
   def create

@@ -20,6 +20,10 @@ RSpec.describe QuestionsController, type: :controller do
 
       expect(assigns(:answers)).to match_array correct_answers
     end
+
+    it 'builds new attachment for answer' do
+      expect(assigns(:attachment).attachments.first).to be_a_new(Attachment)
+    end
   end
 
   describe 'GET #new' do
