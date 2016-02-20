@@ -22,7 +22,12 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'builds new attachment for answer' do
-      expect(assigns(:attachment).attachments.first).to be_a_new(Attachment)
+      user = create(:user)
+      login(user)
+
+      get :show, id: question
+
+      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
     end
   end
 

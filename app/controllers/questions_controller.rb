@@ -8,9 +8,12 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answer = @question.answers.build(user: current_user) if current_user
+    if current_user
+      @answer = @question.answers.build(user: current_user)
+      @attachment = @answer.attachments.build
+    end
     @answers = @question.answers
-    @attachment = @answer.attachments.build
+
   end
 
   def new
