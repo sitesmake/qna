@@ -12,4 +12,8 @@ p = question.body
 	    = f.text_field :title
 	    = f.label "Body"
 	    = f.text_area :body
+	    .attachments
+	    	= f.fields_for :attachments do |attachment|
+	    	  = render 'attachments/attachment_fields', f: attachment
+	    	= link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
 	    = f.submit 'Save'

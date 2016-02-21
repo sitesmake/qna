@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 gem 'carrierwave'
 gem 'remotipart'
+gem 'cocoon'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

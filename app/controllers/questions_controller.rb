@@ -10,7 +10,7 @@ class QuestionsController < ApplicationController
   def show
     if current_user
       @answer = @question.answers.build(user: current_user)
-      @attachment = @answer.attachments.build
+      @attachments = @answer.attachments.build
     end
     @answers = @question.answers
 
@@ -18,7 +18,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = current_user.questions.new
-    @attachment = @question.attachments.build
+    @attachments = @question.attachments.build
   end
 
   def create

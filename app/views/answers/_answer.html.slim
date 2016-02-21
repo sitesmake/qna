@@ -13,4 +13,8 @@ div[class="answer-#{answer.id}"]
       p = form_for answer, remote: true do |f|
         = f.label "#{answer.id}", "Answer"
         = f.text_area :body, id: "answer_#{answer.id}"
+        .attachments
+          = f.fields_for :attachments do |attachment|
+            = render 'attachments/attachment_fields', f: attachment
+          = link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
         = f.submit 'Save'

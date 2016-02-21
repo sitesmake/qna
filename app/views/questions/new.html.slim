@@ -13,8 +13,10 @@
     = f.text_area :body
 
   br
-  .field
-    = render partial: 'attachments/attachment', object: @attachment, locals: {f: f}
+  #attachments
+    = f.fields_for :attachments do |attachment|
+      = render 'attachments/attachment_fields', f: attachment
+    = link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
 
   .actions
     = f.submit "Ask question"
