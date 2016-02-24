@@ -9,6 +9,10 @@ RSpec.describe Answer, type: :model do
   it { should belong_to(:user) }
   it { should validate_presence_of :user_id }
 
+  it { should have_many :attachments }
+
+  it { should accept_nested_attributes_for :attachments }
+
   context "best answer" do
     let!(:question) { create(:question) }
 

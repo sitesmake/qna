@@ -1,0 +1,3 @@
+<% if @attachment.destroyed? %>
+	$('#file-<%= @attachment.id %>').remove();
+<% end %>

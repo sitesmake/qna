@@ -8,12 +8,17 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answer = @question.answers.build(user: current_user) if current_user
+    if current_user
+      @answer = @question.answers.build(user: current_user)
+      @attachments = @answer.attachments.build
+    end
     @answers = @question.answers
+
   end
 
   def new
     @question = current_user.questions.new
+    @attachments = @question.attachments.build
   end
 
   def create
@@ -48,6 +53,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, attachments_attributes: [:file])
   end
 end

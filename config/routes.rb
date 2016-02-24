@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  #get 'answers/:id/set_best_answer' => 'answers#set_best_answer', as: :set_best_answer
+  resources :attachments, only: :destroy
 
   devise_for :users
 

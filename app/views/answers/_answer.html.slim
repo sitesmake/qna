@@ -1,12 +1,20 @@
 div[class="answer-#{answer.id}"]
-	hr
-	p = answer.body
-    - if answer.persisted? && current_user
-      - if current_user.author_of?(@question) && !answer.best?
-        p = link_to 'Set as best answer', set_best_answer_path(answer), class: 'set-best-answer-link', remote: true, method: :post
-      - if current_user.author_of?(answer)
-        p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-        p = form_for answer, remote: true do |f|
-          = f.label "#{answer.id}", "Answer"
-          = f.text_area :body, id: "answer_#{answer.id}"
-          = f.submit 'Save'
+  hr
+  p = answer.body
+
+  - if answer.persisted? && answer.attachments.present?
+    = render partial: 'attachments/list', object: answer, as: :model
+
+  - if answer.persisted? && current_user
+    - if current_user.author_of?(@question) && !answer.best?
+      p = link_to 'Set as best answer', set_best_answer_path(answer), class: 'set-best-answer-link', remote: true, method: :post
+    - if current_user.author_of?(answer)
+      p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      p = form_for answer, remote: true do |f|
+        = f.label "#{answer.id}", "Answer"
+        = f.text_area :body, id: "answer_#{answer.id}"
+        .attachments
+          = f.fields_for :attachments do |attachment|
+            = render 'attachments/attachment_fields', f: attachment
+          = link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
+        = f.submit 'Save'
