@@ -1,6 +1,19 @@
 h1 = question.title
 p = question.body
 
+p#question-vote
+  | rating:&nbsp;
+  = question.rating
+  - if current_user && !current_user.author_of?(question) && !current_user.voted_for?(question)
+    | &nbsp;
+    = link_to 'vote up', vote_question_path(points: 1), id: 'vote-up', method: :post, data: { remote: true }
+    | &nbsp;
+    = link_to 'vote down', vote_question_path(points: -1), id: 'vote-down', method: :post, data: { remote: true }
+  - if current_user && current_user.voted_for?(question)
+    | &nbsp;
+    = link_to 'cancel vote', '#', id: 'vote-cancel'
+
+
 - if question.attachments.present?
 	= render partial: 'attachments/list', object: question, as: :model
 

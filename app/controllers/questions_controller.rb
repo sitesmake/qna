@@ -1,7 +1,21 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :update, :destroy]
+  before_action :load_question, only: [:show, :update, :destroy, :vote]
   before_action :check_user, only: [:update, :destroy]
+
+  def vote
+    if params[:points].to_i < 0
+      @vote = @question.vote_down(current_user)
+      @message = "voted down"
+    else
+      @vote = @question.vote_up(current_user)
+      @message = "voted up"
+    end
+
+    respond_to do |format|
+      format.json { render json: @vote.attributes.merge(rating: @question.rating, message: @message) }
+    end
+  end
 
   def index
     @questions = Question.all

@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :questions do
+    post 'vote/:points' => 'questions#vote', on: :member, as: :vote
+
     resources :answers, shallow: true do
       post 'set_best', on: :member
     end

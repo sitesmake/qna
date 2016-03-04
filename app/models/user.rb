@@ -9,4 +9,8 @@ class User < ActiveRecord::Base
   def author_of?(model)
     id == model.user_id
   end
+
+  def voted_for?(model)
+    model.votes.include?(user: self)
+  end
 end
