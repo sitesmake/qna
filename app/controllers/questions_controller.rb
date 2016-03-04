@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :update, :destroy, :vote]
+  before_action :load_question, only: [:show, :update, :destroy, :vote, :cancel_vote]
   before_action :check_user, only: [:update, :destroy]
 
   def vote
@@ -12,9 +12,15 @@ class QuestionsController < ApplicationController
       @message = "voted up"
     end
 
-    respond_to do |format|
-      format.json { render json: @vote.attributes.merge(rating: @question.rating, message: @message) }
-    end
+    render json: { id: @question.id, message: @message, output: render_to_string(partial: 'votes/block', locals: { data: @question }) }
+  end
+
+  def cancel_vote
+    @vote = @question.votes.where(user: current_user).first
+    @vote.destroy
+    @message = "vote is cancelled"
+
+    render json: { id: @question.id, message: @message, output: render_to_string(partial: 'votes/block', locals: { data: @question }) }
   end
 
   def index

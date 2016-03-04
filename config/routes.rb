@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :questions do
     post 'vote/:points' => 'questions#vote', on: :member, as: :vote
+    delete 'vote' => 'questions#cancel_vote', on: :member, as: :cancel_vote
 
     resources :answers, shallow: true do
       post 'set_best', on: :member

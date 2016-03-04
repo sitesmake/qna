@@ -11,6 +11,6 @@ class User < ActiveRecord::Base
   end
 
   def voted_for?(model)
-    model.votes.include?(user: self)
+    model.votes.collect(&:user_id).include?(self.id)
   end
 end

@@ -18,7 +18,7 @@ feature 'Vote for question', %q{
 	  scenario 'Can voting up', js: true do
 	    click_on 'vote up'
 	    expect(page).to have_content 'voted up'
-	    expect(page).to have_content 'rating: +1'
+	    expect(page).to have_content 'rating: 1'
 	    expect(page).to_not have_link 'vote up'
 	  end
 

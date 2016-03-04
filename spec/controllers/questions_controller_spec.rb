@@ -172,30 +172,30 @@ RSpec.describe QuestionsController, type: :controller do
     before { login(user) }
 
     it 'assigns the requested question to @question' do
-      post :vote, id: question, points: 1, format: :json
+      post :vote, id: question, points: 1, format: :js
       expect(assigns(:question)).to eq question
     end
 
     it 'assigns vote' do
-      post :vote, id: question, points: 1, format: :json
+      post :vote, id: question, points: 1, format: :js
       expect(assigns(:vote)).to be_instance_of(Vote)
     end
 
     it 'votes up' do
-      post :vote, id: question, points: 1, format: :json
+      post :vote, id: question, points: 1, format: :js
       expect(question.rating).to eq 1
     end
 
     it 'votes down' do
-      post :vote, id: question, points: -1, format: :json
+      post :vote, id: question, points: -1, format: :js
       expect(question.rating).to eq -1
     end
 
     it 'returns correct json' do
-      post :vote, id: question, points: 1, format: :json
+      post :vote, id: question, points: 1, format: :js
       parsed_response = JSON.parse(response.body)
 
-      expect(parsed_response['votable_id']).to eq question.id
+      expect(parsed_response['id']).to eq question.id
     end
   end
 

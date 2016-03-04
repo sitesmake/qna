@@ -1,0 +1,10 @@
+| rating:&nbsp;
+span.rating = data.rating
+- if current_user && !current_user.author_of?(data) && !current_user.voted_for?(data)
+  | &nbsp;
+  = link_to 'vote up', vote_question_path(points: 1), id: 'vote-up', class: 'vote', method: :post, data: { remote: true }
+  | &nbsp;
+  = link_to 'vote down', vote_question_path(points: -1), id: 'vote-down', class: 'vote', method: :post, data: { remote: true }
+- if current_user && current_user.voted_for?(data)
+  | &nbsp;
+  = link_to 'cancel vote', cancel_vote_question_path, id: 'cancel-vote', class: 'cancel', method: :delete, data: { remote: true }
