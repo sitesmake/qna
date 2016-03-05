@@ -199,4 +199,22 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe "DELETE #cancel_vote" do
+    let(:user) { create(:user) }
+    let!(:vote) { create(:vote, user: user, votable_id: question.id, votable_type: "Question") }
+
+    before { login(user) }
+
+    it "destroys the vote" do
+      expect { delete :cancel_vote, id: question }.to change(Vote, :count).by(-1)
+    end
+
+    it "returns correct json" do
+      delete :cancel_vote, id: question
+      parsed_response = JSON.parse(response.body)
+
+      expect(parsed_response['id']).to eq question.id
+    end
+  end
+
 end
