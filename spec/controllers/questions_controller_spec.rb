@@ -197,6 +197,19 @@ RSpec.describe QuestionsController, type: :controller do
 
       expect(parsed_response['id']).to eq question.id
     end
+
+    it 'no double-voting' do
+      create(:vote, user: user, votable_id: question.id, votable_type: "Question")
+      post :vote, id: question, points: 1, format: :js
+      expect(response).to be_forbidden
+    end
+
+    it 'author can not vote for his question' do
+      question.user = user
+      question.save!
+      post :vote, id: question, points: 1, format: :js
+      expect(response).to be_forbidden
+    end
   end
 
   describe "DELETE #cancel_vote" do
