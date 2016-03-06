@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
     resources :answers, shallow: true do
       post 'set_best', on: :member
+      post 'vote/:points' => 'answers#vote', on: :member, as: :vote
+      delete 'vote' => 'answers#cancel_vote', on: :member, as: :cancel_vote
     end
   end
 

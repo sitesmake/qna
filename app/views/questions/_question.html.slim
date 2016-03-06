@@ -1,9 +1,6 @@
 h1 = question.title
 p = question.body
 
-p#question-vote
-  = render 'votes/block', data: question
-
 - if question.attachments.present?
 	= render partial: 'attachments/list', object: question, as: :model
 
@@ -20,3 +17,6 @@ p#question-vote
 	    	  = render 'attachments/attachment_fields', f: attachment
 	    	= link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
 	    = f.submit 'Save'
+
+p.vote
+	= render 'votes/block', data: question

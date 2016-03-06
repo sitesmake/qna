@@ -12,27 +12,6 @@ RSpec.describe Question, type: :model do
 
   it { should accept_nested_attributes_for :attachments }
 
-  it { should have_many :votes }
-
-  context "votes" do
-    let!(:question) { create(:question) }
-
-    it "can view rating" do
-      question.votes.create(voice: 1)
-      expect(question.rating).to eq(1)
-    end
-
-    it "can vote up" do
-      user = create(:user)
-      question.vote_up(user)
-      expect(question.rating).to eq(1)
-    end
-
-    it "can vote down" do
-      user = create(:user)
-      question.vote_down(user)
-      expect(question.rating).to eq(-1)
-    end
-  end
+  it_behaves_like "votable"
 
 end

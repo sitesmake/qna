@@ -18,3 +18,7 @@ div[class="answer-#{answer.id}"]
             = render 'attachments/attachment_fields', f: attachment
           = link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
         = f.submit 'Save'
+
+    - if !current_user.author_of?(answer)
+      p.vote
+        = render 'votes/block', data: answer

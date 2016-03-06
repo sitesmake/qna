@@ -5,9 +5,9 @@ $(function() {
   	$('form.edit_question').show();
   });
 
-  $("#question-vote").bind('ajax:success', function(e,data,status,xhr){
+  $("#question .vote").bind('ajax:success', function(e,data,status,xhr){
   	var response = $.parseJSON(xhr.responseText);
-    $("#question-vote").html(response.output);
+    $("#question .vote").html(response.output);
     $("<div>"+response.message+"</div>").prependTo('body').fadeOut('slow');
   }).bind('ajax:error', function(e,data,status,xhr){
   	var response = $.parseJSON(xhr.responseText);
