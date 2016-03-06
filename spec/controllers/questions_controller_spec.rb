@@ -171,11 +171,6 @@ RSpec.describe QuestionsController, type: :controller do
     let(:user) { create(:user) }
     before { login(user) }
 
-    it 'assigns the requested question to @question' do
-      post :vote, id: question, points: 1, format: :js
-      expect(assigns(:question)).to eq question
-    end
-
     it 'assigns vote' do
       post :vote, id: question, points: 1, format: :js
       expect(assigns(:vote)).to be_instance_of(Vote)
