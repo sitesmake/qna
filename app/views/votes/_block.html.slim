@@ -1,10 +1,10 @@
 - if data.kind_of?(Question)
-	- path_vote_up = vote_question_path(points: 1)
-	- path_vote_down = vote_question_path(points: -1)
+	- path_vote_up = vote_up_question_path
+	- path_vote_down = vote_down_question_path
 	- path_cancel_vote = cancel_vote_question_path
 - else
-	- path_vote_up = vote_answer_path(id: data.id, points: 1)
-	- path_vote_down = vote_answer_path(id: data.id, points: -1)
+	- path_vote_up = vote_up_answer_path(id: data.id)
+	- path_vote_down = vote_down_answer_path(id: data.id)
 	- path_cancel_vote = cancel_vote_answer_path(id: data.id)
 
 | rating:&nbsp;

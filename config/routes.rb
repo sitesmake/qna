@@ -4,12 +4,14 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :questions do
-    post 'vote/:points' => 'questions#vote', on: :member, as: :vote
+    post 'vote_up' => 'questions#vote_up', on: :member, as: :vote_up
+    post 'vote_down' => 'questions#vote_down', on: :member, as: :vote_down
     delete 'vote' => 'questions#cancel_vote', on: :member, as: :cancel_vote
 
     resources :answers, shallow: true do
       post 'set_best', on: :member
-      post 'vote/:points' => 'answers#vote', on: :member, as: :vote
+      post 'vote_up' => 'answers#vote_up', on: :member, as: :vote_up
+      post 'vote_down' => 'answers#vote_down', on: :member, as: :vote_down
       delete 'vote' => 'answers#cancel_vote', on: :member, as: :cancel_vote
     end
   end

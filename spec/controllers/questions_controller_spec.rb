@@ -172,22 +172,22 @@ RSpec.describe QuestionsController, type: :controller do
     before { login(user) }
 
     it 'assigns vote' do
-      post :vote, id: question, points: 1, format: :js
+      post :vote_up, id: question, format: :js
       expect(assigns(:vote)).to be_instance_of(Vote)
     end
 
     it 'votes up' do
-      post :vote, id: question, points: 1, format: :js
+      post :vote_up, id: question, format: :js
       expect(question.rating).to eq 1
     end
 
     it 'votes down' do
-      post :vote, id: question, points: -1, format: :js
+      post :vote_down, id: question, format: :js
       expect(question.rating).to eq -1
     end
 
     it 'returns correct json' do
-      post :vote, id: question, points: 1, format: :js
+      post :vote_up, id: question, format: :js
       parsed_response = JSON.parse(response.body)
 
       expect(parsed_response['id']).to eq question.id
@@ -195,14 +195,14 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'no double-voting' do
       create(:vote, user: user, votable_id: question.id, votable_type: "Question")
-      post :vote, id: question, points: 1, format: :js
+      post :vote_up, id: question, format: :js
       expect(response).to be_forbidden
     end
 
     it 'author can not vote for his question' do
       question.user = user
       question.save!
-      post :vote, id: question, points: 1, format: :js
+      post :vote_up, id: question, format: :js
       expect(response).to be_forbidden
     end
   end
