@@ -1,19 +1,10 @@
-- if data.kind_of?(Question)
-	- path_vote_up = vote_up_question_path
-	- path_vote_down = vote_down_question_path
-	- path_cancel_vote = cancel_vote_question_path
-- else
-	- path_vote_up = vote_up_answer_path(id: data.id)
-	- path_vote_down = vote_down_answer_path(id: data.id)
-	- path_cancel_vote = cancel_vote_answer_path(id: data.id)
-
 | rating:&nbsp;
 span.rating = data.rating
 - if current_user && !current_user.author_of?(data) && !current_user.voted_for?(data)
   | &nbsp;
-  = link_to 'vote up', path_vote_up, id: 'vote-up', class: 'vote', method: :post, data: { remote: true }
+  = link_to 'vote up', polymorphic_path(data, action: :vote_up), id: 'vote-up', class: 'vote', method: :post, data: { remote: true }
   | &nbsp;
-  = link_to 'vote down', path_vote_down, id: 'vote-down', class: 'vote', method: :post, data: { remote: true }
+  = link_to 'vote down', polymorphic_path(data, action: :vote_down), id: 'vote-down', class: 'vote', method: :post, data: { remote: true }
 - if current_user && current_user.voted_for?(data)
   | &nbsp;
-  = link_to 'cancel vote', path_cancel_vote, id: 'cancel-vote', class: 'cancel', method: :delete, data: { remote: true }
+  = link_to 'cancel vote', polymorphic_path(data, action: :cancel_vote), id: 'cancel-vote', class: 'cancel', method: :delete, data: { remote: true }
