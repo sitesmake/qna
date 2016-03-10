@@ -33,6 +33,7 @@ feature 'Vote for question', %q{
 	    click_on 'vote up'
 	    expect(page).to_not have_link 'vote up'
 	    click_on 'cancel vote'
+	    expect(page).to have_content 'rating: 0'
 	    expect(page).to have_link 'vote up'
 	  end
 	end
