@@ -13,17 +13,17 @@ shared_examples_for "votable" do
       expect(object.rating).to eq(1)
     end
 
-    it "can vote up" do
-      user = create(:user)
-      object.vote_up(user)
-      expect(object.rating).to eq(1)
-    end
+    #it "can vote up" do
+    #  user = create(:user)
+    #  object.vote_up(user)
+    #  expect(object.rating).to eq(1)
+    #end
 
-    it "can vote down" do
-      user = create(:user)
-      object.vote_down(user)
-      expect(object.rating).to eq(-1)
-    end
+    #it "can vote down" do
+    #  user = create(:user)
+    #  object.vote_down(user)
+    #  expect(object.rating).to eq(-1)
+    #end
   end
 
 end
