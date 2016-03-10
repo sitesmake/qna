@@ -8,16 +8,14 @@ module Voted
   end
 
   def vote_up
-    #@vote = @votable.vote_up(current_user)
-    @vote = current_user.vote_up(@votable)
+    @vote = @votable.vote_up(current_user)
     @message = "voted up"
 
     render json: { id: @votable.id, message: @message, output: render_to_string(partial: 'votes/block', locals: { data: @votable }) }
   end
 
   def vote_down
-    #@vote = @votable.vote_down(current_user)
-    @vote = current_user.vote_down(@votable)
+    @vote = @votable.vote_down(current_user)
     @message = "voted down"
 
     render json: { id: @votable.id, message: @message, output: render_to_string(partial: 'votes/block', locals: { data: @votable }) }

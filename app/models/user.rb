@@ -15,12 +15,4 @@ class User < ActiveRecord::Base
     #model.votes.collect(&:user_id).include?(self.id)
     votes.where(votable: model).exists?
   end
-
-  def vote_up(model)
-    model.votes.create(voice: 1, user: self)
-  end
-
-  def vote_down(model)
-    model.votes.create(voice: -1, user: self)
-  end
 end

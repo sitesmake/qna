@@ -14,8 +14,7 @@ RSpec.describe User, type: :model do
     it "works" do
       user = create(:user)
       expect(user.voted_for?(question)).to be false
-      #question.vote_up(user)
-      user.vote_up(question)
+      question.vote_up(user)
       expect(user.voted_for?(question)).to be true
     end
   end
