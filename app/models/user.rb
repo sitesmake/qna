@@ -15,4 +15,8 @@ class User < ActiveRecord::Base
     #model.votes.collect(&:user_id).include?(self.id)
     votes.where(votable: model).exists?
   end
+
+  def vote_for(model)
+    votes.where(votable: model).first
+  end
 end

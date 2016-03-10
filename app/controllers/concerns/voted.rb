@@ -22,7 +22,7 @@ module Voted
   end
 
   def cancel_vote
-    @vote = @votable.votes.where(user: current_user).first
+    @vote = current_user.vote_for(@votable)
     @vote.destroy
     @message = "vote is cancelled"
 
