@@ -1,0 +1,10 @@
+| rating:&nbsp;
+span.rating = data.rating
+- if current_user && !current_user.author_of?(data) && !current_user.voted_for?(data)
+  | &nbsp;
+  = link_to 'vote up', polymorphic_path(data, action: :vote_up), id: 'vote-up', class: 'vote', method: :post, data: { remote: true }
+  | &nbsp;
+  = link_to 'vote down', polymorphic_path(data, action: :vote_down), id: 'vote-down', class: 'vote', method: :post, data: { remote: true }
+- if current_user && current_user.voted_for?(data)
+  | &nbsp;
+  = link_to 'cancel vote', polymorphic_path(data, action: :cancel_vote), id: 'cancel-vote', class: 'cancel', method: :delete, data: { remote: true }

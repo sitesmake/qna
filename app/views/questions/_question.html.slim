@@ -17,3 +17,6 @@ p = question.body
 	    	  = render 'attachments/attachment_fields', f: attachment
 	    	= link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
 	    = f.submit 'Save'
+
+p.vote
+	= render 'votes/block', data: question

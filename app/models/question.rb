@@ -1,4 +1,6 @@
 class Question < ActiveRecord::Base
+  include Votable
+
 	has_many :answers, dependent: :destroy
   has_many :attachments, as: :attachable
   belongs_to :user
@@ -7,4 +9,5 @@ class Question < ActiveRecord::Base
 
   validates :title, :body, presence: true
   validates :user_id, numericality: true, presence: true
+
 end

@@ -2,8 +2,10 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_answer, except: :create
   before_action :set_question
-  before_action :check_answer_author, except: [:create, :set_best]
+  before_action :check_answer_author, only: [:update, :destroy]
   before_action :check_question_author, only: :set_best
+
+  include Voted
 
   def set_best
     @answer.make_best
