@@ -14,4 +14,14 @@ $(function() {
   	var response = $.parseJSON(xhr.responseText);
   	$("<div>"+response.message+"</div>").prependTo('body').fadeOut('slow');
   });
+
+  var question_id = $('.answers').data('questionId');
+  var current_user = $('body').data('currentUser');
+
+  PrivatePub.subscribe('/questions/'+question_id+'/answers', function(data, channel){
+    var answer = $.parseJSON(data['answer']);
+    if (answer.user_id != current_user) {
+      $('.answers').append('<hr><p>'+answer.body+'</p>');
+    };
+  });
 });

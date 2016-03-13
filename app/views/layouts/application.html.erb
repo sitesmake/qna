@@ -6,7 +6,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body data-current-user="<%= current_user ? current_user.id : 0 %>">
 <% if notice %>
   <p class="notice"><%= notice %></p>
 <% end %>

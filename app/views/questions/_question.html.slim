@@ -20,3 +20,5 @@ p = question.body
 
 p.vote
 	= render 'votes/block', data: question
+
+= subscribe_to "/questions/#{@question.id}/answers"
