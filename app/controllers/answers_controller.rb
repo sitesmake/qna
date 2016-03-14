@@ -6,6 +6,7 @@ class AnswersController < ApplicationController
   before_action :check_question_author, only: :set_best
 
   include Voted
+  include Commented
 
   def set_best
     @answer.make_best
