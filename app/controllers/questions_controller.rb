@@ -4,7 +4,6 @@ class QuestionsController < ApplicationController
   before_action :check_user, only: [:update, :destroy]
 
   include Voted
-  include Commented
 
   def index
     @questions = Question.all

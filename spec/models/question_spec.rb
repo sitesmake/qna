@@ -14,6 +14,6 @@ RSpec.describe Question, type: :model do
 
   it_behaves_like "votable"
 
-  it_behaves_like "commentable"
+  it { should have_many(:comments).dependent(:destroy) }
 
 end

@@ -1,6 +1,7 @@
 class Answer < ActiveRecord::Base
   include Votable
-  include Commentable
+
+  has_many :comments, as: :commentable, dependent: :destroy
 
   belongs_to :question
   belongs_to :user
