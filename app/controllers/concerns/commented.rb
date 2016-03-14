@@ -2,7 +2,7 @@ module Commented
   extend ActiveSupport::Concern
 
   included do
-    before_action :load_resource, only: :comment
+    before_action :load_commented_resource, only: :comment
   end
 
   def comment
@@ -28,7 +28,7 @@ module Commented
     controller_name.classify.constantize
   end
 
-  def load_resource
+  def load_commented_resource
     @commentable = model_klass.find(params[:id])
   end
 end
