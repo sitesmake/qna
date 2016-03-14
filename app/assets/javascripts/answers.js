@@ -15,7 +15,7 @@ $(function() {
   	$("<div>"+response.message+"</div>").prependTo('body').fadeOut('slow');
   });
 
-  var question_id = $('.answers').data('questionId');
+  var question_id = $('#question').data('questionId');
   var current_user = $('body').data('currentUser');
 
   PrivatePub.subscribe('/questions/'+question_id+'/answers', function(data, channel){
@@ -24,4 +24,13 @@ $(function() {
       $('.answers').append('<hr><p>'+answer.body+'</p>');
     };
   });
+
+  PrivatePub.subscribe('/questions/'+question_id+'/comments/answers', function(data, channel){
+    var comment = $.parseJSON(data['comment']);
+    if (comment.user_id != current_user) {
+      $('#answer-'+comment.commentable_id+'-comments').append('<li>'+comment.body+'</li>');
+    };
+  });
+
+
 });

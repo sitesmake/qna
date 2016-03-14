@@ -8,10 +8,13 @@ module Commented
   def comment
     @comment = @commentable.comments.build(user: current_user, body: params[:comment][:body])
 
+    question_id = @commentable.id if controller_name=="questions"
+    question_id = @commentable.question.id if controller_name=="answers"
+
     respond_to do |format|
       if @comment.save
         format.js do
-          PrivatePub.publish_to "/#{controller_name.classify}/#{@commentable.id}/comments", comment: @comment.to_json
+          PrivatePub.publish_to "/questions/#{question_id}/comments/#{controller_name}", comment: @comment.to_json
         end
       else
         format.js

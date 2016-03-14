@@ -1,6 +1,7 @@
-#question = render @question
+#question data-question-id="#{@question.id}"
+  = render @question
 
-.answers data-question-id="#{@question.id}"
+.answers
   = render @answers
 
 - if current_user

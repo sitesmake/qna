@@ -23,4 +23,13 @@ $(function() {
     };
   });
 
+  var question_id = $('#question').data('questionId');
+
+  PrivatePub.subscribe('/questions/'+question_id+'/comments/questions', function(data, channel){
+    var comment = $.parseJSON(data['comment']);
+    if (comment.user_id != current_user) {
+      $('#question-'+question_id+'-comments').append('<li>'+comment.body+'</li>');
+    };
+  });
+
 });
