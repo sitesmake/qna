@@ -3,6 +3,8 @@ module Commented
 
   included do
     before_action :load_commented_resource, only: :comment
+    before_action :load_comment, only: :destroy_comment
+    before_action :check_comment_author, only: :destroy_comment
   end
 
   def comment
@@ -22,6 +24,11 @@ module Commented
     end
   end
 
+  def destroy_comment
+    @comment.destroy if current_user.author_of?(@comment)
+    render "comments/destroy", format: :js
+  end
+
   private
 
   def model_klass
@@ -30,5 +37,15 @@ module Commented
 
   def load_commented_resource
     @commentable = model_klass.find(params[:id])
+  end
+
+  def load_comment
+    @comment = Comment.find(params[:comment_id])
+  end
+
+  def check_comment_author
+    unless current_user.author_of?(@comment)
+      head(:forbidden)
+    end
   end
 end

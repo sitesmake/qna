@@ -3,4 +3,4 @@
     = a.body
     - if current_user && current_user.author_of?(a)
       | &nbsp;
-      = link_to '(remove this comment)', comment_path(a), method: :delete, remote: true
+      = link_to '(remove this comment)', polymorphic_path(model, comment_id: a.id,  action: :destroy_comment), method: :delete, data: { remote: true }

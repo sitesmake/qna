@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :comments, only: :destroy
+  # resources :comments, only: :destroy
 
   resources :attachments, only: :destroy
 
@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   concern :commentable do
     post 'comment', on: :member
+    delete 'comment/:comment_id', action: 'destroy_comment', on: :member, as: :destroy_comment
   end
 
   resources :questions, concerns: [:votable, :commentable] do
