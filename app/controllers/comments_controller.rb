@@ -30,8 +30,8 @@ class CommentsController < ApplicationController
 
   def set_commentable
     @resource_type = request.path.split('/').second
-    @commentable = Question.find(params[:id]) if @resource_type == "questions"
-    @commentable = Answer.find(params[:id]) if @resource_type == "answers"
+    klass = @resource_type.singularize.capitalize.constantize
+    @commentable = klass.find(params[:id])
   end
 
   def load_comment
