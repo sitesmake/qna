@@ -7,6 +7,8 @@ class AnswersController < ApplicationController
 
   include Voted
 
+  respond_to :js
+
   def set_best
     @answer.make_best
     @answers = @question.answers
@@ -29,7 +31,7 @@ class AnswersController < ApplicationController
 
   def update
     @answer.update(answer_params)
-    @answers = @question.answers
+    respond_with @answer
   end
 
   def destroy
