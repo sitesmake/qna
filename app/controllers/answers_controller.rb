@@ -10,8 +10,7 @@ class AnswersController < ApplicationController
   respond_to :js
 
   def set_best
-    @answer.make_best
-    @answers = @question.answers
+    respond_with(@answer.make_best)
   end
 
   def create
