@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment.destroy if current_user.author_of?(@comment)
-    render "comments/destroy", format: :js
+    respond_with(@comment)
   end
 
   private
