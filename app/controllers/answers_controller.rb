@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
   before_action :set_question
   before_action :check_answer_author, only: [:update, :destroy]
   before_action :check_question_author, only: :set_best
+  before_action :build_answer, only: :create
+  after_action :publish_answer, only: :create
 
   include Voted
 
@@ -14,18 +16,7 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = @question.answers.build(answer_params.merge(user: current_user))
-    @answers = @question.answers
-
-    respond_to do |format|
-      if @answer.save
-        format.js do
-          PrivatePub.publish_to "/questions/#{@question.id}/answers", answer: @answer.to_json
-        end
-      else
-        format.js
-      end
-    end
+    respond_with(@answer)
   end
 
   def update
@@ -38,6 +29,14 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def publish_answer
+    PrivatePub.publish_to "/questions/#{@question.id}/answers", answer: @answer.to_json if @answer.valid?
+  end
+
+  def build_answer
+    @answer = @question.answers.create(answer_params.merge(user: current_user))
+  end
 
   def check_answer_author
     unless current_user.author_of?(@answer)
