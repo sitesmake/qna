@@ -13,22 +13,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'renders show view' do
       expect(response).to render_template :show
     end
-
-    it 'assigns the requested question answers to @answers' do
-      correct_answers = create_list(:answer, 2, question: question)
-      other_answer = create(:answer)
-
-      expect(assigns(:answers)).to match_array correct_answers
-    end
-
-    it 'builds new attachment for answer' do
-      user = create(:user)
-      login(user)
-
-      get :show, id: question
-
-      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
-    end
   end
 
   describe 'GET #new' do
@@ -45,10 +29,6 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'assigns a current_user to @question' do
       expect(assigns(:question).user).to eq(user)
-    end
-
-    it 'builds new attachment for question' do
-      expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
 
     it 'renders new view' do

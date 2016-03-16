@@ -2,48 +2,50 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
   before_action :check_user, only: [:update, :destroy]
+  before_action :build_answer, only: :show
+  after_action :publish_question, only: :create
+
+  respond_to :js, only: :update
+  respond_to :json, only: :create
 
   include Voted
 
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    if current_user
-      @answer = @question.answers.build(user: current_user)
-      @attachments = @answer.attachments.build
-    end
-    @answers = @question.answers
-
+    respond_with @question
   end
 
   def new
-    @question = current_user.questions.new
-    @attachments = @question.attachments.build
+    respond_with(@question = current_user.questions.new)
   end
 
   def create
-    @question = current_user.questions.new(question_params)
-
-    if @question.save
-      PrivatePub.publish_to "/questions", question: @question.to_json
-      redirect_to @question, notice: 'Your Question was successfully created'
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
     @question.update(question_params)
+    respond_with @question
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path
+    respond_with(@question.destroy)
   end
 
   private
+
+  def publish_question
+    PrivatePub.publish_to("/questions", question: @question.to_json) if @question.valid?
+  end
+
+  def build_answer
+    if current_user
+      @answer = @question.answers.build(user: current_user)
+    end
+  end
 
   def check_user
     unless current_user.author_of?(@question)

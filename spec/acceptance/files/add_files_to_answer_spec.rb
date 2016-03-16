@@ -16,6 +16,7 @@ feature 'Add files to answer', %q{
   end
 
   scenario 'User adds file when asks question', js: true do
+    click_on 'add file'
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
 
     click_on 'Post answer'
@@ -24,6 +25,7 @@ feature 'Add files to answer', %q{
   end
 
   scenario 'User adds multiple files when asks question', js: true do
+    click_on 'add file'
     click_on 'add file'
 
     page.all("input[type='file']")[0].set "#{Rails.root}/spec/spec_helper.rb"
