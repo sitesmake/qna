@@ -2,7 +2,7 @@
   = render @question
 
 .answers
-  = render @answers
+  = render @question.answers
 
 - if current_user
   = form_for [@question, @answer], remote: true do |f|

@@ -3,9 +3,11 @@ class AttachmentsController < ApplicationController
   before_action :load_attachment
   before_action :check_attachment_author
 
+  respond_to :js
+
   def destroy
   	@attachment.destroy if current_user.author_of?(@attachment.attachable)
-  	respond_to :js
+    respond_with(@attachment)
   end
 
   private
