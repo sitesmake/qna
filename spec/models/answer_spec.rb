@@ -10,10 +10,10 @@ RSpec.describe Answer, type: :model do
   it { should validate_presence_of :user_id }
 
   it { should have_many :attachments }
-
   it { should accept_nested_attributes_for :attachments }
 
-  it { should have_many :votes }
+  it_behaves_like "votable"
+  it_behaves_like "commentable"
 
   context "best answer" do
     let!(:question) { create(:question) }

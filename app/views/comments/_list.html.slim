@@ -1,0 +1,6 @@
+- model.comments.each do |a|
+  li id="comment-#{a.id}"
+    = a.body
+    - if current_user && current_user.author_of?(a)
+      | &nbsp;
+      = link_to '(remove this comment)', comment_path(a.id), method: :delete, data: { remote: true }

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :comments, only: :destroy
+
   resources :attachments, only: :destroy
 
   devise_for :users
@@ -9,8 +11,12 @@ Rails.application.routes.draw do
     delete 'cancel_vote', on: :member
   end
 
-  resources :questions, concerns: :votable do
-    resources :answers, concerns: :votable, shallow: true do
+  concern :commentable do
+    post 'comment' => 'comments#create', on: :member
+  end
+
+  resources :questions, concerns: [:votable, :commentable] do
+    resources :answers, concerns: [:votable, :commentable], shallow: true do
       post 'set_best', on: :member
     end
   end

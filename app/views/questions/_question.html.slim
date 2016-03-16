@@ -1,3 +1,5 @@
+.question-errors
+
 h1 = question.title
 p = question.body
 
@@ -20,3 +22,20 @@ p = question.body
 
 p.vote
 	= render 'votes/block', data: question
+
+ul[id="question-#{question.id}-comments"]
+	- if question.comments.present?
+		= render partial: 'comments/list', object: question, as: :model
+
+- if current_user
+  = form_for(question.comments.build(user: current_user), url: comment_question_url, remote: true) do |f|
+    .field
+      = f.label :body, 'Comment'
+      br
+      = f.text_area :body
+    = f.submit "Post comment"
+
+
+= subscribe_to "/questions/#{question.id}/answers"
+= subscribe_to "/questions/#{question.id}/comments/questions"
+= subscribe_to "/questions/#{question.id}/comments/answers"

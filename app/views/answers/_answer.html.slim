@@ -1,12 +1,13 @@
 div[class="answer-#{answer.id}"]
   hr
+  div[class="answer-#{answer.id}-errors"]
   p = answer.body
 
   - if answer.persisted? && answer.attachments.present?
     = render partial: 'attachments/list', object: answer, as: :model
 
   - if answer.persisted? && current_user
-    - if current_user.author_of?(@question) && !answer.best?
+    - if current_user.author_of?(answer.question) && !answer.best?
       p = link_to 'Set as best answer', set_best_answer_path(answer), class: 'set-best-answer-link', remote: true, method: :post
     - if current_user.author_of?(answer)
       p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
@@ -22,3 +23,15 @@ div[class="answer-#{answer.id}"]
     - if !current_user.author_of?(answer)
       p.vote
         = render 'votes/block', data: answer
+
+  ul[id="answer-#{answer.id}-comments"]
+    - if answer.comments.present?
+      = render partial: 'comments/list', object: answer, as: :model
+
+  - if answer.persisted? && current_user
+    = form_for(answer.comments.build(user: current_user), url: comment_answer_url(id: answer.id), remote: true) do |f|
+      .field
+        = f.label :body, 'Comment'
+        br
+        = f.text_area :body
+      = f.submit "Post comment"

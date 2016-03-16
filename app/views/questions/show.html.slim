@@ -1,6 +1,8 @@
-#question = render @question
+#question data-question-id="#{@question.id}"
+  = render @question
 
-.answers = render @answers
+.answers
+  = render @answers
 
 - if current_user
   = form_for [@question, @answer], remote: true do |f|
