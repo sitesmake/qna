@@ -281,6 +281,7 @@ DEPENDENCIES
   pry-remote
   rails (= 4.2.5)
   remotipart
+  responders
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
