@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   resources :attachments, only: :destroy
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
   concern :votable do
     post 'vote_up', on: :member
