@@ -99,6 +99,15 @@ RSpec.describe User, type: :model do
         end
 
       end
+
+      context "no email returned by oauth" do
+        let(:auth) { OmniAuth::AuthHash.new(provider: 'vkontakte', uid: '123456') }
+
+        it "creates user email" do
+          user = User.find_for_oauth(auth)
+          expect(user.email).to eq "vkontakte_123456@qna.dev"
+        end
+      end
     end
   end
 end
