@@ -19,8 +19,17 @@ class Ability
 
   def user_abilities
     guest_abilities
-    can :create [Question, Answer, Comment]
+
+    can :create, [Question, Answer, Comment]
+
     can :update, [Question, Answer, Comment], user: user
+    can :destroy, [Question, Answer, Comment], user: user
+
+    alias_action :vote_up, :vote_down, :cancel_vote, to: :vote
+    can :vote, [Question, Answer]
+    cannot :vote, [Question, Answer], user: user
+
+    can :set_best, Answer, question: { user: user }
   end
 
   def admin_abilities
