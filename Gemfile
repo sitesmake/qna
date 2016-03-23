@@ -1,10 +1,18 @@
 source 'https://rubygems.org'
+gem 'slim-rails'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
 gem 'responders'
+
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-vkontakte'
+
+gem "letter_opener", :group => :development
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -65,7 +73,5 @@ group :test do
   gem 'launchy'
   gem 'selenium-webdriver'
   gem 'capybara-webkit'
+  gem 'capybara-email'
 end
-
-gem 'slim-rails'
-gem 'devise'

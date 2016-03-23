@@ -31,6 +31,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Devise::TestHelpers, type: :controller
   config.include ControllerHelpers, type: :controller
+  config.include OmniauthMacros, type: :feature
   #config.include AcceptanceHelper, type: :feature
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
