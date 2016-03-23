@@ -14,6 +14,8 @@ gem 'omniauth-vkontakte'
 
 gem "letter_opener", :group => :development
 
+gem 'cancancan'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
