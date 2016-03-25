@@ -4,10 +4,6 @@ module Voted
   included do
     before_action :load_voted_resource, only: [:vote_up, :vote_down, :cancel_vote]
     before_action :check_voted, only: [:vote_up, :vote_down]
-    # before_action :check_author, only: [:vote_up, :vote_down]
-
-    # authorize_resource
-    # skip_authorization_check only: [:vote_up, :vote_down, :cancel_vote]
   end
 
   def vote_up
@@ -48,12 +44,6 @@ module Voted
   def load_voted_resource
     @votable = model_klass.find(params[:id])
   end
-
-  # def check_author
-  #   if current_user.author_of?(@votable)
-  #     head(:forbidden)
-  #   end
-  # end
 
   def check_voted
     if current_user.voted_for?(@votable)

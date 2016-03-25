@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
   respond_to :js, only: :update
   respond_to :json, only: :create
 
-  authorize_resource
+  authorize_resource except: [:vote_up, :vote_down, :cancel_vote]
 
   include Voted
 
