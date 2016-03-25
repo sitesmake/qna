@@ -24,10 +24,12 @@ describe Ability do
     let(:question) { create(:question, user: user) }
     let(:answer) { create(:answer, user: user) }
     let(:comment) { create(:comment, user: user) }
+    let(:vote) { create(:vote, user: user) }
     let(:other_user) { create :user }
     let(:other_question) { create :question}
     let(:other_answer) { create :answer }
     let(:other_comment) { create :comment }
+    let(:other_vote) { create :vote }
     let(:other_question_answer) { create(:answer, question: other_question) }
 
     it { should_not be_able_to :manage, :all }
@@ -48,10 +50,12 @@ describe Ability do
     it { should be_able_to :destroy, question }
     it { should be_able_to :destroy, answer }
     it { should be_able_to :destroy, comment }
+    it { should be_able_to :destroy, vote }
 
     it { should_not be_able_to :destroy, other_question }
     it { should_not be_able_to :destroy, other_answer }
     it { should_not be_able_to :destroy, other_comment }
+    it { should_not be_able_to :destroy, other_vote }
 
     it { should be_able_to :vote, other_question }
     it { should be_able_to :vote, other_answer }
