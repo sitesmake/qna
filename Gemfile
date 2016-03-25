@@ -11,6 +11,7 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-vkontakte'
+gem 'doorkeeper'
 
 gem "letter_opener", :group => :development
 
