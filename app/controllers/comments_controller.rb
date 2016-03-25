@@ -2,7 +2,6 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable, only: :create
   before_action :load_comment, only: :destroy
-  before_action :check_comment_author, only: :destroy
   before_action :create_comment, only: :create
   after_action :publish_comment, only: :create
 
@@ -41,9 +40,4 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
   end
 
-  def check_comment_author
-    unless current_user.author_of?(@comment)
-      head(:forbidden)
-    end
-  end
 end
