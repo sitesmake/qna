@@ -2,10 +2,10 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_answer, except: :create
   before_action :set_question
-  before_action :check_answer_author, only: [:update, :destroy]
-  before_action :check_question_author, only: :set_best
   before_action :build_answer, only: :create
   after_action :publish_answer, only: :create
+
+  authorize_resource except: [:vote_up, :vote_down, :cancel_vote]
 
   include Voted
 
@@ -36,18 +36,6 @@ class AnswersController < ApplicationController
 
   def build_answer
     @answer = @question.answers.create(answer_params.merge(user: current_user))
-  end
-
-  def check_answer_author
-    unless current_user.author_of?(@answer)
-      head(:forbidden)
-    end
-  end
-
-  def check_question_author
-    unless current_user.author_of?(@question)
-      head(:forbidden)
-    end
   end
 
   def set_question

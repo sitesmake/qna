@@ -7,9 +7,9 @@ div[class="answer-#{answer.id}"]
     = render partial: 'attachments/list', object: answer, as: :model
 
   - if answer.persisted? && current_user
-    - if current_user.author_of?(answer.question) && !answer.best?
+    - if can?(:set_best, answer) && !answer.best?
       p = link_to 'Set as best answer', set_best_answer_path(answer), class: 'set-best-answer-link', remote: true, method: :post
-    - if current_user.author_of?(answer)
+    - if can?(:edit, answer)
       p = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
       p = form_for answer, remote: true do |f|
         = f.label "#{answer.id}", "Answer"
@@ -20,7 +20,7 @@ div[class="answer-#{answer.id}"]
           = link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
         = f.submit 'Save'
 
-    - if !current_user.author_of?(answer)
+    - if can?(:vote, answer)
       p.vote
         = render 'votes/block', data: answer
 

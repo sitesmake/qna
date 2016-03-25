@@ -1,7 +1,8 @@
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_attachment
-  before_action :check_attachment_author
+
+  authorize_resource
 
   respond_to :js
 
@@ -16,9 +17,4 @@ class AttachmentsController < ApplicationController
     @attachment = Attachment.find(params[:id])
   end
 
-  def check_attachment_author
-    unless current_user.author_of?(@attachment.attachable)
-      head(:forbidden)
-    end
-  end
 end
