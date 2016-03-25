@@ -22,14 +22,17 @@ class Ability
 
     can :create, [Question, Answer, Comment]
 
-    can :update, [Question, Answer, Comment], user: user
-    can :destroy, [Question, Answer, Comment], user: user
+    can :update, [Question, Answer, Comment], user_id: user.id
+    can :destroy, [Question, Answer, Comment, Vote], user_id: user.id
 
-    alias_action :vote_up, :vote_down, :cancel_vote, to: :vote
-    can :vote, [Question, Answer]
-    cannot :vote, [Question, Answer], user: user
+    can :vote, [Question, Answer] do |object|
+      object.user_id != user.id
+    end
 
-    can :set_best, Answer, question: { user: user }
+    can :set_best, Answer, question: { user_id: user.id }
+
+    can :destroy, Attachment, attachable: { user_id: user.id }
+
   end
 
   def admin_abilities

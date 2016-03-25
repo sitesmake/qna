@@ -5,9 +5,14 @@ module Voted
     before_action :load_voted_resource, only: [:vote_up, :vote_down, :cancel_vote]
     before_action :check_voted, only: [:vote_up, :vote_down]
     before_action :check_author, only: [:vote_up, :vote_down]
+
+    # authorize_resource
+    # skip_authorization_check only: [:vote_up, :vote_down, :cancel_vote]
   end
 
   def vote_up
+    authorize! :vote, @votable
+
     @vote = @votable.vote_up(current_user)
     @message = "voted up"
 
@@ -15,6 +20,8 @@ module Voted
   end
 
   def vote_down
+    authorize! :vote, @votable
+
     @vote = @votable.vote_down(current_user)
     @message = "voted down"
 
@@ -23,6 +30,9 @@ module Voted
 
   def cancel_vote
     @vote = current_user.vote_for(@votable)
+
+    authorize! :destroy, @vote
+
     @vote.destroy
     @message = "vote is cancelled"
 

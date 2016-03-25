@@ -140,10 +140,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, id: question }.not_to change(Question, :count)
       end
 
-      it 'redirects to root path' do
+      it 'returns forbidden' do
         delete :destroy, id: question
-        # expect(response).to be_forbidden
-        expect(response).to redirect_to root_path
+        expect(response).to be_forbidden
       end
     end
   end

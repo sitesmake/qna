@@ -10,13 +10,13 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, user: user) }
 
     it 'assigns the requested answer to @answer' do
-      patch :update, question_id: question, id: answer, answer: attributes_for(:answer), format: :js
+      patch :update, id: answer, answer: attributes_for(:answer), format: :js
 
       expect(assigns(:answer)).to eq answer
     end
 
     it 'changes answer attributes' do
-      patch :update, question_id: question, id: answer, answer: { body: 'new body 2' }, format: :js
+      patch :update, id: answer, answer: { body: 'new body 2' }, format: :js
 
       answer.reload
 
@@ -24,11 +24,13 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'does not allow to update for other user' do
-      answer = create(:answer)
+      answer = create(:answer, body: 'constanta')
 
-      patch :update, question_id: question, id: answer, answer: attributes_for(:answer), format: :js
+      patch :update, id: answer, answer: attributes_for(:answer), format: :js
 
-      expect(response).to be_forbidden
+      answer.reload
+
+      expect(answer.body).to eq 'constanta'
     end
   end
 
@@ -74,7 +76,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with correct user' do
       it 'deletes answer' do
-        expect { delete :destroy, question_id: question, id: answer, format: :js }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, id: answer, format: :js }.to change(question.answers, :count).by(-1)
       end
     end
 
@@ -84,11 +86,11 @@ RSpec.describe AnswersController, type: :controller do
       before { login(incorrect_user) }
 
       it 'does not allow to destroy' do
-        expect { delete :destroy, question_id: question, id: answer, format: :js }.not_to change(question.answers, :count)
+        expect { delete :destroy, id: answer, format: :js }.not_to change(question.answers, :count)
       end
 
       it 'returns forbidden' do
-        delete :destroy, question_id: question, id: answer
+        delete :destroy, id: answer
         expect(response).to be_forbidden
       end
     end
