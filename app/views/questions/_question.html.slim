@@ -7,7 +7,7 @@ p = question.body
   = render partial: 'attachments/list', object: question, as: :model
 
 - if current_user
-  - if can?(:update, question)
+  - if can?(:edit, question)
     p = link_to '(edit)', '#', id: 'edit-question-link'
     p = form_for question, remote: true do |f|
         = f.label "Title"
