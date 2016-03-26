@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, on: :collection
+      end
+    end
+  end
+
   use_doorkeeper
+
   resources :comments, only: :destroy
 
   resources :attachments, only: :destroy
