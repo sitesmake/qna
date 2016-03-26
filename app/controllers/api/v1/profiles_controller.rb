@@ -9,7 +9,7 @@ class Api::V1::ProfilesController < ApplicationController
     respond_with current_resource_owner
   end
 
-  def all_but_me
+  def index
     other_users = User.where.not(id: current_resource_owner)
     respond_with other_users
   end
