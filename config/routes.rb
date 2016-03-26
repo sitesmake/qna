@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource :profiles do
         get :me, on: :collection
+        get :all_but_me, on: :collection
       end
     end
   end
