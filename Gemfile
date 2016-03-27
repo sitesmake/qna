@@ -16,6 +16,8 @@ gem 'omniauth-vkontakte'
 
 gem 'doorkeeper'
 gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
