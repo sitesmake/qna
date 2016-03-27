@@ -64,8 +64,8 @@ describe "Profile API" do
       end
 
       it "contains other users" do
-        expect(response.body).to include_json(user1.to_json)
-        expect(response.body).to include_json(user2.to_json)
+        expect(response.body).to include_json(user1.to_json).at_path("profiles")
+        expect(response.body).to include_json(user2.to_json).at_path("profiles")
       end
 
       it "does not contains me" do
