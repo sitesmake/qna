@@ -33,6 +33,8 @@ class Ability
 
     can :destroy, Attachment, attachable: { user_id: user.id }
 
+    can :me, User, { user_id: user.id }
+
   end
 
   def admin_abilities
