@@ -6,17 +6,18 @@ gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
 gem 'responders'
+gem 'letter_opener', :group => :development
 
 gem 'devise'
+gem 'cancancan'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-vkontakte'
+
 gem 'doorkeeper'
-
-gem "letter_opener", :group => :development
-
-gem 'cancancan'
-
+gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'

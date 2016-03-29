@@ -8,4 +8,10 @@ FactoryGirl.define do
     body
     user
   end
+
+  factory :invalid_answer, class: 'Answer' do
+    question
+    user
+    body nil
+  end
 end
