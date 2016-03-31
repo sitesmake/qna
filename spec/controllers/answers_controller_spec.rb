@@ -6,6 +6,35 @@ RSpec.describe AnswersController, type: :controller do
 
   before { login(user) }
 
+  describe 'POST #create' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+
+    before { login(user) }
+
+    context 'with valid attributes' do
+      it 'saves the new answer' do
+        expect { post :create, question_id: question, answer: attributes_for(:answer), format: :js }.to change(Answer, :count).by(1)
+      end
+
+      it 'assigns a current_user to @question' do
+        post :create, question_id: question, answer: attributes_for(:answer), format: :js
+        expect(assigns(:answer).user).to eq(user)
+      end
+    end
+
+    context 'with invalid attributes' do
+      it 'does not save answer' do
+        expect { post :create, question_id: question, answer: attributes_for(:invalid_answer), format: :js }.not_to change(Answer, :count)
+      end
+
+      it 'render create view' do
+        post :create, question_id: question, answer: attributes_for(:invalid_answer), format: :js
+        expect(response).to render_template :create
+      end
+    end
+  end
+
   describe 'PATCH #update' do
     let!(:answer) { create(:answer, user: user) }
 
