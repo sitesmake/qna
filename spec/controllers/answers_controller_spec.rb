@@ -129,4 +129,8 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  it_behaves_like "Votable" do
+    let(:object) { create(:answer) }
+  end
 end
