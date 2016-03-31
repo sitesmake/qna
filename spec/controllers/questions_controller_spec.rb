@@ -55,6 +55,11 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, question: attributes_for(:question)
         expect(assigns(:question).user).to eq(user)
       end
+
+      it_behaves_like 'private_pub' do
+        let(:channel) { "/questions" }
+        let(:obj) { post :create, question: attributes_for(:question) }
+      end
     end
 
     context 'with invalid attributes' do

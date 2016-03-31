@@ -21,6 +21,11 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question, answer: attributes_for(:answer), format: :js
         expect(assigns(:answer).user).to eq(user)
       end
+
+      it_behaves_like 'private_pub' do
+        let(:channel) { "/questions/#{question.id}/answers" }
+        let(:obj) { post :create, question_id: question, answer: attributes_for(:answer) }
+      end
     end
 
     context 'with invalid attributes' do
