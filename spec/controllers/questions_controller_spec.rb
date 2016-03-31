@@ -58,7 +58,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it_behaves_like 'private_pub' do
         let(:channel) { "/questions" }
-        let(:obj) { post :create, question: attributes_for(:question) }
+        let(:req) { post :create, question: attributes_for(:question) }
       end
     end
 

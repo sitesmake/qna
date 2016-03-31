@@ -22,7 +22,7 @@ RSpec.describe CommentsController, type: :controller do
 
     it_behaves_like 'private_pub' do
       let(:channel) { "/questions/#{question.id}/comments/answers" }
-      let(:obj) { post :create, id: answer.id, comment: attributes_for(:comment) }
+      let(:req) { post :create, id: answer.id, comment: attributes_for(:comment) }
     end
   end
 
