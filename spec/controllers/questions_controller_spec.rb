@@ -55,6 +55,11 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, question: attributes_for(:question)
         expect(assigns(:question).user).to eq(user)
       end
+
+      it_behaves_like 'private_pub' do
+        let(:channel) { "/questions" }
+        let(:req) { post :create, question: attributes_for(:question) }
+      end
     end
 
     context 'with invalid attributes' do
@@ -147,62 +152,8 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe "POST #vote" do
-    let(:user) { create(:user) }
-    before { login(user) }
-
-    it 'assigns vote' do
-      post :vote_up, id: question, format: :js
-      expect(assigns(:vote)).to be_instance_of(Vote)
-    end
-
-    it 'votes up' do
-      post :vote_up, id: question, format: :js
-      expect(question.rating).to eq 1
-    end
-
-    it 'votes down' do
-      post :vote_down, id: question, format: :js
-      expect(question.rating).to eq -1
-    end
-
-    it 'returns correct json' do
-      post :vote_up, id: question, format: :js
-      parsed_response = JSON.parse(response.body)
-
-      expect(parsed_response['id']).to eq question.id
-    end
-
-    it 'no double-voting' do
-      create(:vote, user: user, votable_id: question.id, votable_type: "Question")
-      post :vote_up, id: question, format: :js
-      expect(response).to be_forbidden
-    end
-
-    it 'author can not vote for his question' do
-      question.user = user
-      question.save!
-      post :vote_up, id: question, format: :js
-      expect(response).to be_forbidden
-    end
-  end
-
-  describe "DELETE #cancel_vote" do
-    let(:user) { create(:user) }
-    let!(:vote) { create(:vote, user: user, votable_id: question.id, votable_type: "Question") }
-
-    before { login(user) }
-
-    it "destroys the vote" do
-      expect { delete :cancel_vote, id: question }.to change(Vote, :count).by(-1)
-    end
-
-    it "returns correct json" do
-      delete :cancel_vote, id: question
-      parsed_response = JSON.parse(response.body)
-
-      expect(parsed_response['id']).to eq question.id
-    end
+  it_behaves_like "Votable" do
+    let(:object) { create(:question) }
   end
 
 end

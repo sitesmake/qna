@@ -4,16 +4,10 @@ describe "Questions API" do
   let(:access_token) { create :access_token }
 
   describe "GET /index" do
-    context "unauthorized" do
-      it "returns 401 status if there is no access token" do
-        get '/api/v1/questions', format: :json
-        expect(response.status).to eq 401
-      end
+    it_behaves_like "API Authenticable"
 
-      it "returns 401 status if access token is invalid" do
-        get '/api/v1/questions', format: :json, access_token: '1234'
-        expect(response.status).to eq 401
-      end
+    def do_request(options = {})
+      get "/api/v1/questions", { format: :json }.merge(options)
     end
 
     context "authorized" do
@@ -22,12 +16,12 @@ describe "Questions API" do
       let!(:answer) { create(:answer, question: question) }
 
       before do
-    		get '/api/v1/questions', format: :json, access_token: access_token.token
+        get '/api/v1/questions', format: :json, access_token: access_token.token
       end
 
-    	it "returns 200 status code" do
-    		expect(response).to be_success
-    	end
+      it "returns 200 status code" do
+        expect(response).to be_success
+      end
 
       it "returns list of questions" do
         expect(response.body).to have_json_size(2).at_path("questions")
@@ -64,16 +58,10 @@ describe "Questions API" do
     let!(:question) { create(:question) }
     let!(:answer) { create(:answer, question: question) }
 
-    context "unauthorized" do
-      it "returns 401 status if there is no access token" do
-        get "/api/v1/questions/#{question.id}", format: :json
-        expect(response.status).to eq 401
-      end
+    it_behaves_like "API Authenticable"
 
-      it "returns 401 status if access token is invalid" do
-        get "/api/v1/questions/#{question.id}", format: :json, access_token: '1234'
-        expect(response.status).to eq 401
-      end
+    def do_request(options = {})
+      get "/api/v1/questions/#{question.id}", { format: :json }.merge(options)
     end
 
     context "authorized" do
@@ -112,51 +100,42 @@ describe "Questions API" do
         end
       end
     end
+  end
 
+  describe "/POST create" do
+    it_behaves_like "API Authenticable"
 
+    def do_request(options = {})
+      get "/api/v1/questions", { format: :json }.merge(options)
+    end
 
-    describe "/POST create" do
-      context "unauthorized" do
-        it "returns 401 status if there is no access token" do
-          post "/api/v1/questions", format: :json
-          expect(response.status).to eq 401
+    context "authorized" do
+      let!(:user) { create :user}
+      let!(:access_token) { create(:access_token, resource_owner_id: user.id)}
+
+      context "with valid attributes" do
+        it "returns 200 status" do
+          post "/api/v1/questions", question: attributes_for(:question), format: :json, access_token: access_token.token
+          expect(response).to be_success
         end
 
-        it "returns 401 status if access token is invalid" do
-          post "/api/v1/questions", format: :json, access_token: '1234'
-          expect(response.status).to eq 401
+        it "saves the question" do
+          expect { post "/api/v1/questions", question: attributes_for(:question), format: :json, access_token: access_token.token }.to change(user.questions, :count).by(1)
         end
       end
 
-      context "authorized" do
-        let!(:user) { create :user}
-        let!(:access_token) { create(:access_token, resource_owner_id: user.id)}
-
-        context "with valid attributes" do
-          it "returns 200 status" do
-            post "/api/v1/questions", question: attributes_for(:question), format: :json, access_token: access_token.token
-            expect(response).to be_success
-          end
-
-          it "saves the question" do
-            expect { post "/api/v1/questions", question: attributes_for(:question), format: :json, access_token: access_token.token }.to change(user.questions, :count).by(1)
-          end
+      context "with invalid attributes" do
+        it "returns 422 status" do
+          post "/api/v1/questions", question: attributes_for(:invalid_question), format: :json, access_token: access_token.token
+          expect(response.status).to eq 422
         end
 
-        context "with invalid attributes" do
-          it "returns 422 status" do
-            post "/api/v1/questions", question: attributes_for(:invalid_question), format: :json, access_token: access_token.token
-            expect(response.status).to eq 422
-          end
-
-          it "don't saves the question" do
-            expect { post "/api/v1/questions", question: attributes_for(:invalid_question), format: :json, access_token: access_token.token }.to_not change(user.questions, :count)
-          end
+        it "don't saves the question" do
+          expect { post "/api/v1/questions", question: attributes_for(:invalid_question), format: :json, access_token: access_token.token }.to_not change(user.questions, :count)
         end
       end
     end
-
-
-
   end
+
+
 end

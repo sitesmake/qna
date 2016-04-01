@@ -19,6 +19,11 @@ RSpec.describe CommentsController, type: :controller do
         expect { post :create, id: answer.id, comment: attributes_for(:comment, body: nil), format: :js }.to_not change(Comment, :count)
       end
     end
+
+    it_behaves_like 'private_pub' do
+      let(:channel) { "/questions/#{question.id}/comments/answers" }
+      let(:req) { post :create, id: answer.id, comment: attributes_for(:comment) }
+    end
   end
 
 	describe 'DELETE #destroy' do
