@@ -17,9 +17,14 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, question_id: question, answer: attributes_for(:answer), format: :js }.to change(Answer, :count).by(1)
       end
 
-      it 'assigns a current_user to @question' do
+      it 'assigns a current_user to answer' do
         post :create, question_id: question, answer: attributes_for(:answer), format: :js
         expect(assigns(:answer).user).to eq(user)
+      end
+
+      it 'assigns a current question to answer' do
+        post :create, question_id: question, answer: attributes_for(:answer), format: :js
+        expect(assigns(:answer).question).to eq(question)
       end
 
       it_behaves_like 'private_pub' do
