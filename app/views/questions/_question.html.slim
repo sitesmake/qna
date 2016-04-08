@@ -21,6 +21,8 @@ p = question.body
         = f.submit 'Save'
   - if can?(:destroy, question)
     p = link_to '(delete)', question, id: 'delete-question-link', method: :delete
+  - if can?(:toggle_subscription, question)
+    p = link_to subscription_text(question), toggle_subscription_question_path(question), method: :patch, id: "question-#{question.id}-toggle-subscription", remote: true
 
 p.vote
   = render 'votes/block', data: question

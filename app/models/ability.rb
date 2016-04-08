@@ -35,6 +35,8 @@ class Ability
 
     can :me, User, { user_id: user.id }
 
+    can :toggle_subscription, Question
+
   end
 
   def admin_abilities

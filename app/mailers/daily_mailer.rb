@@ -11,4 +11,10 @@ class DailyMailer < ApplicationMailer
 
     mail to: user.email, subject: "Вопросы за прошедший день"
   end
+
+  def notify(user, question, answer)
+    @answer = answer
+
+    mail to: user.email, subject: "Новый ответ на вопрос: #{question.title}"
+  end
 end

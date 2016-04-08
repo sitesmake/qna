@@ -15,4 +15,10 @@ RSpec.describe Question, type: :model do
   it_behaves_like "votable"
   it_behaves_like "commentable"
 
+  it "subscribe author after create" do
+    user = create(:user)
+    question = create(:question, user: user)
+    expect(question.subscriptions.first.user).to eq user
+  end
+
 end
