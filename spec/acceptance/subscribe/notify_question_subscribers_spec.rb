@@ -49,6 +49,6 @@ feature 'User can subscribe for question new answers', %q{
     end
 
     open_email question.user.email
-    expect(current_email).to have_content("User Rails!")
+    expect(current_email).to have_content("Use Rails!")
   end
 end
