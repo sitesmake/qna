@@ -11,4 +11,6 @@ class Question < ActiveRecord::Base
   validates :title, :body, presence: true
   validates :user_id, numericality: true, presence: true
 
+  scope :for_last_day, -> { where("created_at >= ?", 1.day.ago) }
+
 end

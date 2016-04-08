@@ -1,0 +1,4 @@
+Вопросы за прошедший день от QnA:
+<% @questions.each do |question| %>
+	<%= question.title %> - <%= question_url(question) %>
+<% end %>
