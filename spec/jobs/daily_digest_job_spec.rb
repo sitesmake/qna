@@ -5,10 +5,10 @@ RSpec.describe DailyDigestJob, type: :job do
   let!(:questions) { create_list(:question, 2, user: users.first) }
 
   it "sends daily digest" do
-  	expect(Question).to receive(:for_last_day).and_return(questions)
+  	# expect(Question).to receive(:for_last_day).and_return(questions)
 
   	users.each do |user|
-  		expect(DailyMailer).to receive(:digest).with(user, questions).and_call_original
+  		expect(DailyMailer).to receive(:digest).with(user).and_call_original
   	end
 
   	DailyDigestJob.perform_now

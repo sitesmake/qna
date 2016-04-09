@@ -5,9 +5,8 @@ class DailyMailer < ApplicationMailer
   #
   #   en.daily_mailer.digest.subject
   #
-  def digest(user, questions)
-    @user = user
-    @questions = questions
+  def digest(user)
+    @questions = Question.for_last_day
 
     mail to: user.email, subject: "Вопросы за прошедший день"
   end

@@ -4,8 +4,8 @@ RSpec.describe DailyMailer, type: :mailer do
   describe "digest" do
     let!(:user) { create(:user) }
     let!(:questions) { create_list(:question, 3, user: user) }
-    let!(:question_not_send) { create(:question, user: user) }
-    let(:mail) { DailyMailer.digest(user, questions) }
+    let!(:question_not_send) { create(:question, user: user, created_at: Time.current.last_week) }
+    let(:mail) { DailyMailer.digest(user) }
 
     it "renders the headers" do
       expect(mail.subject).to eq("Вопросы за прошедший день")
