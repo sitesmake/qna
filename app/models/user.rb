@@ -61,8 +61,4 @@ class User < ActiveRecord::Base
   def create_subscription(question)
     subscriptions.create(user: self, question: question)
   end
-
-  def destroy_subscription(subsctiption)
-    Subscription.find(subsctiption).destroy
-  end
 end
