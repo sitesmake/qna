@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :subscriptions, only: [:create, :destroy]
 
   namespace :api do
     namespace :v1 do
@@ -31,6 +30,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:votable, :commentable] do
+    resources :subscriptions, only: [:create, :destroy], shallow: true
     # patch :toggle_subscription, on: :member
     resources :answers, concerns: [:votable, :commentable], shallow: true do
       post 'set_best', on: :member

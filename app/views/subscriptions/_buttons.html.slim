@@ -1,4 +1,4 @@
 - if current_user.subscribed_for?(question)
   = link_to "отписаться от уведомлений", subscription_path(question.subscriptions.where(user: current_user).first.id), method: :delete, data: { remote: true }
 - else
-  = link_to "подписаться на уведомления", subscriptions_path(question_id: question), method: :post, data: { remote: true }
+  = link_to "подписаться на уведомления", question_subscriptions_path(question_id: question), method: :post, data: { remote: true }
