@@ -1,10 +1,10 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :update, :destroy, :toggle_subscription]
+  before_action :load_question, only: [:show, :update, :destroy]
   before_action :build_answer, only: :show
   after_action :publish_question, only: :create
 
-  respond_to :js, only: [:update, :toggle_subscription]
+  respond_to :js, only: :update
   respond_to :json, only: :create
 
   authorize_resource except: [:vote_up, :vote_down, :cancel_vote]
@@ -36,10 +36,10 @@ class QuestionsController < ApplicationController
     respond_with(@question.destroy)
   end
 
-  def toggle_subscription
-    current_user.toggle_subscription(@question)
-    respond_with @question
-  end
+  # def toggle_subscription
+  #   current_user.toggle_subscription(@question)
+  #   respond_with @question
+  # end
 
   private
 

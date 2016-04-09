@@ -9,20 +9,21 @@ p = question.body
 - if current_user
   - if can?(:edit, question)
     p = link_to '(edit)', '#', id: 'edit-question-link'
-    p = form_for question, remote: true do |f|
-        = f.label "Title"
-        = f.text_field :title
-        = f.label "Body"
-        = f.text_area :body
-        .attachments
-          = f.fields_for :attachments do |attachment|
-            = render 'attachments/attachment_fields', f: attachment
-          = link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
-        = f.submit 'Save'
+    = form_for question, remote: true do |f|
+      = f.label "Title"
+      = f.text_field :title
+      = f.label "Body"
+      = f.text_area :body
+      .attachments
+        = f.fields_for :attachments do |attachment|
+          = render 'attachments/attachment_fields', f: attachment
+        = link_to_add_association 'add file', f, :attachments, partial: 'attachments/attachment_fields'
+      = f.submit 'Save'
   - if can?(:destroy, question)
     p = link_to '(delete)', question, id: 'delete-question-link', method: :delete
-  - if can?(:toggle_subscription, question)
-    p = link_to subscription_text(question), toggle_subscription_question_path(question), method: :patch, id: "question-#{question.id}-toggle-subscription", remote: true
+  - if can?(:create, Subscription)
+    p [id="question-#{question.id}-toggle-subscription"]
+      = render 'subscriptions/buttons', question: question
 
 p.vote
   = render 'votes/block', data: question

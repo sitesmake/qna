@@ -35,7 +35,8 @@ class Ability
 
     can :me, User, { user_id: user.id }
 
-    can :toggle_subscription, Question
+    can :create, Subscription
+    can :destroy, Subscription
 
   end
 

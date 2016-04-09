@@ -50,11 +50,19 @@ class User < ActiveRecord::Base
     subscriptions.exists?(question_id: question)
   end
 
-  def toggle_subscription(question)
-    if subscribed_for?(question)
-      subscriptions.where(user: self, question: question).destroy_all
-    else
-      subscriptions.create(user: self, question: question)
-    end
+  # def toggle_subscription(question)
+  #   if subscribed_for?(question)
+  #     subscriptions.where(user: self, question: question).destroy_all
+  #   else
+  #     subscriptions.create(user: self, question: question)
+  #   end
+  # end
+
+  def create_subscription(question)
+    subscriptions.create(user: self, question: question)
+  end
+
+  def destroy_subscription(subsctiption)
+    Subscription.find(subsctiption).destroy
   end
 end

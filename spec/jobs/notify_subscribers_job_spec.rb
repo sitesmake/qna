@@ -5,7 +5,7 @@ RSpec.describe NotifySubscribersJob, type: :job do
   let!(:question) { create(:question, user: users.first) }
   let!(:answer) { create(:answer, question: question, user: users.second) }
 
-  before(:each) { users.second.toggle_subscription(question) }
+  before(:each) { users.second.create_subscription(question) }
 
   it "sends notifications" do
     users.each do |user|

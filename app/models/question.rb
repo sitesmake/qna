@@ -19,7 +19,8 @@ class Question < ActiveRecord::Base
   private
 
   def subscribe_author
-    user.toggle_subscription(self)
+    # user.toggle_subscription(self)
+    user.create_subscription(self)
   end
 
 end
