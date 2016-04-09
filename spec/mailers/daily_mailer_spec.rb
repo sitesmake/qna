@@ -28,4 +28,25 @@ RSpec.describe DailyMailer, type: :mailer do
     it_behaves_like "body rendering", :html_part
   end
 
+  describe "notify" do
+    let!(:user) { create(:user) }
+    let!(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, question: question) }
+
+    let(:mail) { DailyMailer.notify(user, question, answer) }
+
+    it "renders the headers" do
+      expect(mail.subject).to eq("Новый ответ на вопрос: #{question.title}")
+      expect(mail.to).to eq([user.email])
+    end
+
+    it "renders answer in email body html" do
+        expect(mail.send(:text_part).body.encoded).to include(answer.body)
+    end
+
+    it "renders answer in email body text" do
+        expect(mail.send(:html_part).body.encoded).to include(answer.body)
+    end
+  end
+
 end
