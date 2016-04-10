@@ -20,10 +20,10 @@ class Ability
   def user_abilities
     guest_abilities
 
-    can :create, [Question, Answer, Comment]
+    can :create, [Question, Answer, Comment, Subscription]
 
     can :update, [Question, Answer, Comment], user_id: user.id
-    can :destroy, [Question, Answer, Comment, Vote], user_id: user.id
+    can :destroy, [Question, Answer, Comment, Vote, Subscription], user_id: user.id
 
     can :vote, [Question, Answer] do |object|
       object.user_id != user.id
@@ -35,6 +35,7 @@ class Ability
 
     can :me, User, { user_id: user.id }
 
+    cannot :create, Subscription, question: { subscriptions: { user_id: user.id } }
   end
 
   def admin_abilities

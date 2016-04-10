@@ -12,6 +12,7 @@ module Qna
     config.app_generators.scaffold_controller :responders_controller
 
     config.autoload_paths += %W(#{config.root}/app/uploaders)
+    config.autoload_paths += %W(#{config.root}/apps/jobs)
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

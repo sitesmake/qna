@@ -25,12 +25,14 @@ describe Ability do
     let(:answer) { create(:answer, user: user) }
     let(:comment) { create(:comment, user: user) }
     let(:vote) { create(:vote, user: user) }
+    let(:subscription) { create(:subscription, user: user) }
     let(:other_user) { create :user }
     let(:other_question) { create :question}
     let(:other_answer) { create :answer }
     let(:other_comment) { create :comment }
     let(:other_vote) { create :vote }
     let(:other_question_answer) { create(:answer, question: other_question) }
+    let(:other_subscription) { create(:subscription) }
 
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
@@ -38,6 +40,7 @@ describe Ability do
     it { should be_able_to :create, Question }
     it { should be_able_to :create, Answer }
     it { should be_able_to :create, Comment }
+    it { should be_able_to :create, Subscription }
 
     it { should be_able_to :update, question }
     it { should be_able_to :update, answer }
@@ -51,11 +54,13 @@ describe Ability do
     it { should be_able_to :destroy, answer }
     it { should be_able_to :destroy, comment }
     it { should be_able_to :destroy, vote }
+    it { should be_able_to :destroy, subscription }
 
     it { should_not be_able_to :destroy, other_question }
     it { should_not be_able_to :destroy, other_answer }
     it { should_not be_able_to :destroy, other_comment }
     it { should_not be_able_to :destroy, other_vote }
+    it { should_not be_able_to :destroy, other_subscription }
 
     it { should be_able_to :vote, other_question }
     it { should be_able_to :vote, other_answer }

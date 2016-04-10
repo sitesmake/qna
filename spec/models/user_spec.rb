@@ -5,8 +5,27 @@ RSpec.describe User, type: :model do
   it { should validate_presence_of :password }
 
   it { should have_many(:questions) }
-
   it { should have_many(:answers) }
+  it { should have_many(:votes) }
+  it { should have_many(:authorizations) }
+  it { should have_many(:subscriptions) }
+
+  context "subscriptions" do
+    let!(:user) { create(:user) }
+    let!(:question) { create(:question) }
+
+    describe "#create_subscription" do
+      it "creates subscription for user" do
+        expect { User.create_subscription(question).to change(Subscription, :count).by(1) }
+      end
+    end
+
+    describe "#destroy_subscription" do
+      it "destroys subscription" do
+        expect { User.destroy_subscription(question.subscriptions.first).to change(Subscription, :count).by(-1) }
+      end
+    end
+  end
 
   context "vote for" do
     let!(:question) { create(:question) }

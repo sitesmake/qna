@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :answers
   has_many :votes
   has_many :authorizations
+  has_many :subscriptions
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -43,5 +44,13 @@ class User < ActiveRecord::Base
 
   def create_authorization(auth)
     authorizations.create(provider: auth.provider, uid: auth.uid)
+  end
+
+  def subscribed_for?(question)
+    subscriptions.exists?(question_id: question)
+  end
+
+  def create_subscription(question)
+    subscriptions.create(user: self, question: question)
   end
 end

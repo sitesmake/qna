@@ -14,10 +14,18 @@ class Answer < ActiveRecord::Base
 
   default_scope { order('best DESC, created_at') }
 
+  after_save :notify_subscribers
+
   def make_best
     ActiveRecord::Base.transaction do
       Answer.where(question: self.question, best: true).update_all(best: false)
       self.update_attributes(best: true)
     end
+  end
+
+  private
+
+  def notify_subscribers
+    NotifySubscribersJob.perform_later(self.question, self)
   end
 end
