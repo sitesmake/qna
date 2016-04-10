@@ -36,11 +36,6 @@ class QuestionsController < ApplicationController
     respond_with(@question.destroy)
   end
 
-  # def toggle_subscription
-  #   current_user.toggle_subscription(@question)
-  #   respond_with @question
-  # end
-
   private
 
   def publish_question

@@ -155,41 +155,4 @@ RSpec.describe QuestionsController, type: :controller do
   it_behaves_like "Votable" do
     let(:object) { create(:question) }
   end
-
-  # describe "PATCH #toggle_subscription" do
-  #   let(:user) { create(:user) }
-
-  #   context "with logged user" do
-  #     before { login(user) }
-
-  #     it "first time toggle subscription to true" do
-  #       patch :toggle_subscription, id: question.id, format: :js
-  #       expect(user.subscribed_for?(question)).to be true
-  #     end
-
-  #     it "unsubscribe from subscribed status" do
-  #       user.toggle_subscription(question)
-  #       patch :toggle_subscription, id: question.id, format: :js
-  #       expect(user.subscribed_for?(question)).to be false
-  #     end
-
-  #     it "renders toggle_subscription template" do
-  #       patch :toggle_subscription, id: question.id, format: :js
-  #       expect(response).to render_template :toggle_subscription
-  #     end
-  #   end
-
-  #   context "with guest user" do
-  #     let!(:question) { create(:question) }
-  #     it "do not change subscriptions count" do
-  #       expect { patch :toggle_subscription, id: question.id, format: :js }.to_not change(Subscription, :count)
-  #     end
-
-  #     it "returns forbidden" do
-  #       patch :toggle_subscription, id: question.id, format: :js
-  #       expect(response.status).to eq 401
-  #     end
-  #   end
-  # end
-
 end

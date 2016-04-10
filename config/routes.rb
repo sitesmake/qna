@@ -31,7 +31,6 @@ Rails.application.routes.draw do
 
   resources :questions, concerns: [:votable, :commentable] do
     resources :subscriptions, only: [:create, :destroy], shallow: true
-    # patch :toggle_subscription, on: :member
     resources :answers, concerns: [:votable, :commentable], shallow: true do
       post 'set_best', on: :member
     end
