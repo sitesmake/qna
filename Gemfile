@@ -22,6 +22,9 @@ gem 'oj_mimic_json'
 gem 'delayed_job_active_record'
 gem 'whenever'
 
+gem 'mysql2'
+gem 'thinking-sphinx'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
 # Use postgresql as the database for Active Record
