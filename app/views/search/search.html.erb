@@ -1,0 +1,8 @@
+<h3>Search results:</h3>
+<% unless @results.present? %>
+	<h3>Nothing found</h3>
+<% else %>
+	<% @results.each do |result| %>
+	  <%= render partial: "#{result.class.name.downcase}", object: result %>
+	<% end %>
+<% end %>

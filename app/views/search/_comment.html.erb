@@ -1,0 +1,4 @@
+<h3>Comment:</h3>
+<% path = comment.commentable if comment.commentable.is_a?(Question)  %>
+<% path = comment.commentable.question if comment.commentable.is_a?(Answer)  %>
+<p><%= link_to comment.body.truncate(80), question_path(path) %></p>

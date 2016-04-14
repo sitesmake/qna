@@ -1,0 +1,7 @@
+<%= form_for :query, url: search_path, method: :get do |f| %>
+  query: <%= f.text_field :query %>
+
+	limit search: <%= select("query", "search_in", Search::SEARCH_OPTIONS, {include_blank: true}) %>
+
+	<%= f.submit "Search" %>
+<% end %>
