@@ -1,7 +1,7 @@
 <%= form_tag search_path, method: :get do %>
   query: <%= text_field_tag :query %>
 
-	search: <%= select_tag("search_in", options_for_select(Search::SEARCH_OPTIONS), prompt: "Everywhere") %>
+  search: <%= select_tag("search_in", options_for_select(Search::SEARCH_OPTIONS), prompt: "Everywhere") %>
 
-	<%= submit_tag "Search" %>
+  <%= submit_tag "Search" %>
 <% end %>

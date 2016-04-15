@@ -1,10 +1,10 @@
 <div id="search_results">
-	<h1>Search results:</h1>
-	<% unless @results.present? %>
-		<h2>Nothing found</h2>
-	<% else %>
-		<% @results.each do |result| %>
-		  <%= render partial: "#{result.class.name.downcase}", object: result %>
-		<% end %>
-	<% end %>
+  <h1>Search results:</h1>
+  <% unless @results.present? %>
+    <h2>Nothing found</h2>
+  <% else %>
+    <% @results.each do |result| %>
+      <%= render partial: "#{result.class.name.downcase}", object: result %>
+    <% end %>
+  <% end %>
 </div>
