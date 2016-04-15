@@ -1,7 +1,7 @@
-<%= form_for :query, url: search_path, method: :get do |f| %>
-  query: <%= f.text_field :query %>
+<%= form_tag search_path, method: :get do %>
+  query: <%= text_field_tag :query %>
 
-	limit search: <%= select("query", "search_in", Search::SEARCH_OPTIONS, {include_blank: true}) %>
+	search: <%= select_tag("search_in", options_for_select(Search::SEARCH_OPTIONS), prompt: "Everywhere") %>
 
-	<%= f.submit "Search" %>
+	<%= submit_tag "Search" %>
 <% end %>
