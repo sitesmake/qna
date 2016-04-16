@@ -21,6 +21,11 @@
   <%= link_to 'Sign in', new_user_session_path %>
   <%= link_to 'Register', new_user_registration_path %>
 <% end %>
+
+<div id="search">
+  <%= render 'search/form' %>
+</div>
+
 <%= yield %>
 
 </body>
