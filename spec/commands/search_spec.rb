@@ -18,7 +18,7 @@ RSpec.describe Search do
     end
   end
 
-  it "search everywhere with wrong search_in options" do
+  it "falls back to search everywhere with wrong search_in options" do
     expect(ThinkingSphinx).to receive(:search).with("not_blank_line")
     Search.run({query: "not_blank_line", search_in: "Incorrect"})
   end
