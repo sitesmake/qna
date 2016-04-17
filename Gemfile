@@ -22,6 +22,10 @@ gem 'oj_mimic_json'
 gem 'delayed_job_active_record'
 gem 'whenever'
 
+gem 'sidekiq'
+gem 'sinatra', require: nil
+gem 'sidetiq'
+
 gem 'mysql2'
 gem 'thinking-sphinx'
 gem 'active_interaction'
