@@ -26,6 +26,9 @@ gem 'mysql2'
 gem 'thinking-sphinx'
 gem 'active_interaction'
 
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
+
 group :development do
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
