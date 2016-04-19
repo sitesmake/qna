@@ -8,6 +8,7 @@ require 'capistrano/bundler'
 require 'capistrano/rails'
 require 'capistrano/sidekiq'
 require 'whenever/capistrano'
+require 'capistrano/delayed-job'
 
 # Include tasks from other gems included in your Gemfile
 #

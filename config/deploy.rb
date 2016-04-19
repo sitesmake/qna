@@ -26,6 +26,10 @@ namespace :deploy do
   after :publishing, :restart
 end
 
+after 'deploy:published', 'restart' do
+  invoke 'delayed_job:restart'
+end
+
 namespace :private_pub do
   desc 'start private_pub server'
   task :start do
