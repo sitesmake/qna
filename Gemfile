@@ -41,7 +41,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
-  gem 'capistrano3-delayed-job', require: false
+  #gem 'capistrano3-delayed-job', require: false
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

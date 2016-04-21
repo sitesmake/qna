@@ -29,7 +29,7 @@ div[class="answer-#{answer.id}"]
       = render partial: 'comments/list', object: answer, as: :model
 
   - if answer.persisted? && current_user
-    = form_for(answer.comments.build(user: current_user), url: comment_answer_url(id: answer.id), remote: true) do |f|
+    = form_for([answer, Comment.new], remote: true) do |f|
       .field
         = f.label :body, 'Comment'
         br

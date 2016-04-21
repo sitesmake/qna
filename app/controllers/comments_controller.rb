@@ -21,9 +21,9 @@ class CommentsController < ApplicationController
   private
 
   def publish_comment
-    question_id = @commentable.id if @resource_type == "questions"
-    question_id = @commentable.question.id if @resource_type == "answers"
-    PrivatePub.publish_to "/questions/#{question_id}/comments/#{@resource_type}", comment: @comment.to_json if @comment.valid?
+    question_id = @commentable.id if @resource_type == "question"
+    question_id = @commentable.question.id if @resource_type == "answer"
+    PrivatePub.publish_to "/questions/#{question_id}/comments/#{@resource_type.pluralize}", comment: @comment.to_json if @comment.valid?
   end
 
   def create_comment
@@ -31,9 +31,9 @@ class CommentsController < ApplicationController
   end
 
   def set_commentable
-    @resource_type = request.path.split('/').second
-    klass = @resource_type.singularize.capitalize.constantize
-    @commentable = klass.find(params[:id])
+    @resource_type = request.path.split('/').second.singularize
+    klass = @resource_type.capitalize.constantize
+    @commentable = klass.find(params["#{@resource_type}_id"])
   end
 
   def load_comment

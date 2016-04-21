@@ -33,7 +33,7 @@ ul[id="question-#{question.id}-comments"]
     = render partial: 'comments/list', object: question, as: :model
 
 - if current_user
-  = form_for(question.comments.build(user: current_user), url: comment_question_url, remote: true) do |f|
+  = form_for([question, Comment.new], remote: true) do |f|
     .field
       = f.label :body, 'Comment'
       br

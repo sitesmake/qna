@@ -28,7 +28,8 @@ Rails.application.routes.draw do
   end
 
   concern :commentable do
-    post 'comment' => 'comments#create', on: :member
+    # post 'comment' => 'comments#create', on: :member
+    resources :comments, shallow: true, only: [:create, :destroy]
   end
 
   resources :questions, concerns: [:votable, :commentable] do
