@@ -1,28 +1,18 @@
-== README
+## Questions Answered
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+##### Учебный проект для онлайн-школы Thinknetica
 
-Things you may want to cover:
+Используемые технологии:
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+- RSpec, Tdd/Bdd
+- Acceptance тестирование, Capybara
+- Ajax, AJAH и AJAJSON
+- Nested Forms и полиморфные ассоциации
+- Comet и Pub/Sub
+- Тонкие контроллеры и responders
+- OAuth и аутентификация через социальные сети
+- Авторизация в Rails, применение CanCan и Pundit
+- Разработка REST API, Doorkeeper, Сериалайзеры
+- Rspec shared examples, stubs и mocks, messages expectations
+- Background jobs
+- Sphinx и Thinkning Sphinx
